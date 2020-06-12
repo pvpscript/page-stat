@@ -19,6 +19,6 @@
 			"128": "images/graph_icon128.png"
 		},
 		"default_title": "Page usage statistics",
-		"default_popup": "browser_popup.html"
+		"default_popup": "popup.html"
 	}
 }
