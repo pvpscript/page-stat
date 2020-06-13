@@ -1,8 +1,79 @@
-chrome.runtime.onInstalled.addListener(function() {
+const blacklistRule = {
+	conditions: [new chrome.declarativeContent.PageStateMatcher({
+		pageUrl: {hostEquals: 'developer.chrome.com'},
+	})
+	],
+	actions: []
+};
+
+const blacklist = fetch(chrome.runtime.getURL("blacklist.json"), {
+	method: 'GET',
+	mode: 'cors',
+	cache: 'no-cache',
+	headers: {
+		'Accept': 'application/json'
+	}
+}).then(data => data.json());
+
+const regex = new RegExp(/^(([a-zA-Z]*:\/\/(\/)?)?(www\.)?(.+?)(?=(\/|#|\?|$)))/i);
+
+function checkBlacklist(tabId, changeInfo, tab) {
+	//alert(chrome.runtime.getURL("blacklist.json"));
+	//const rawUrl = regex.exec(tab.url)[5];
+	//console.log(tab);
+	
+	if (tab.url.indexOf("https") >= 0) {
+		chrome.browserAction.setIcon({tabId: tabId, path:"images/test.png"}, () => {
+			console.log("Icon has been changed");
+		});
+	}
+	
+	//chrome.pageAction.show(tabId);
+	/*
+	blacklist.then(list => {
+		if (list.pages.includes(rawUrl)) {
+			//chrome.pageAction.setPopup({popup: "test.html"});
+		}
+	});
+	*/
+}
+
+/*
+chrome.tabs.onActivated.addListener((activeInfo) => {
+	console.log(`tabId: ${activeInfo.tabId}`);
+	console.log(`windowId: ${activeInfo.windowId}`);
+
+	chrome.tabs.get(activeInfo.tabId, (tab) => {
+		console.log(`[get] tab ${tab.id} url -> ${tab.url}`);
+		if (tab.url.indexOf("https") >= 0) {
+			chrome.browserAction.setIcon({tabId: tab.id, path:"images/seiti.png"}, () => {
+				console.log("Icon has been changed");
+			});
+		}
+	});
+});
+*/
+
+chrome.tabs.query({}, (tabs) => {
+	console.log(tabs);
+});
+
+chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+	console.log(`Tab with id "${tabId}" was closed!`);
+});
+
+chrome.tabs.onUpdated.addListener(checkBlacklist);
+chrome.runtime.onInstalled.addListener(function(message, sender, sendResponse) {
 	chrome.storage.sync.set({color: '#3aa757'}, function() {
 		console.log("The color is green");
 	});
-	chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+
+	/*chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+		chrome.declarativeContent.onPageChanged.addRules([
+			blacklistRule
+		]);
+	});*/
+	/*chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
 		chrome.declarativeContent.onPageChanged.addRules([{
 			conditions: [new chrome.declarativeContent.PageStateMatcher({
 				pageUrl: {hostEquals: 'developer.chrome.com'},
@@ -11,4 +82,5 @@ chrome.runtime.onInstalled.addListener(function() {
 				actions: [new chrome.declarativeContent.ShowPageAction()]
 		}]);
 	});
+	*/
 });
