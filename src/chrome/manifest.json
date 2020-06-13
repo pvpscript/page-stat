@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"description": "Display time usage statistics for accessed pages",
 	"manifest_version": 2,
-	"permissions": ["storage", "declarativeContent"],
+	"permissions": ["tabs", "storage", "declarativeContent"],
 
 	"icons": {},
 
@@ -20,5 +20,9 @@
 		},
 		"default_title": "Page usage statistics",
 		"default_popup": "popup.html"
-	}
+	},
+
+	"web_accessible_resources": [
+		"blacklist.js"
+	]
 }
