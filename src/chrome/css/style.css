@@ -1,0 +1,106 @@
+/*.header {
+  display: grid;
+}
+.header div > h2 {
+   display: inline-grid;
+   text-align: right;
+   margin: 2px;
+};
+*/
+.header {
+  display: grid;
+  grid-template-columns: max-content 300px;
+  grid-template-rows: auto auto;
+  
+  grid-template-areas:
+  "hostlabel hostname"
+  "statuslabel switch";
+  
+  grid-gap: 5px;
+}
+
+.header > * {
+  margin: 0;
+}
+
+.header .host-label {
+  grid-area: hostlabel;
+  justify-self: end;
+}
+
+.header .host-name {
+  grid-area: hostname;
+  justify-self: start;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+}
+
+.header .status-label {
+  grid-area: statuslabel;
+  justify-self: end;
+}
+
+.header .status-name {
+  grid-area: statusname;
+  justify-self: start;
+}
+
+.switch__container {
+  grid-area: switch;
+  justify-self: end;
+}
+
+.switch {
+  position: absolute;
+  visibility: hidden;
+  justify-self: end;
+}
+
+.switch + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+.switch--shadow + label {
+  padding: 2px;
+  width: 40px;
+  height: 20px;
+  background-color: #dddddd;
+  border-radius: 25%/50%;
+}
+
+.switch--shadow + label:before,
+.switch--shadow + label:after {
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: '';
+}
+
+.switch--shadow + label:before {
+  right: 1px;
+  background-color: #f1f1f1;
+  border-radius: 60px;
+  transition: all 0.4s;
+}
+
+.switch--shadow + label:after {
+  width: 50%;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s;
+}
+
+.switch--shadow:checked + label:before {
+  background-color: #8ce196;
+}
+
+.switch--shadow:checked + label:after {
+  transform: translate(20px);
+}

@@ -1,17 +1,27 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<style>
-			button {
-				height: 20%;
-				width: 100%;
-				outline: none;
-			}
-		</style>
+		<link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
-		<h1>WHITELISTED</h1>
-		<button id="changeColor">A nice button</button>
+		<div class="header">
+			<h3 class="host-label">HOST:</h3><h3 class="host-name" id="hostname"></h3>
+			<h3 class="status-label">STATUS:</h3>
+			<div class="switch__container">
+				<input id="switch-shadow" class="switch switch--shadow" type="checkbox" />
+				<label for="switch-shadow"></label>
+			</div>
+		</div>
+		<div class="spent">
+
+		</div>
+		<div class="options">
+
+		</div>
+		<div class="footer">
+
+		</div>
+
 		<script src="popup.js"></script>
 	</body>
 </html>
