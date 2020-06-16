@@ -65,7 +65,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	console.log(`Tab with id "${tabId}" was closed!`);
 });
 
-function tabAction(tabId. changeInfo, tab) {
+function tabAction(tabId, changeInfo, tab) {
 	checkBlacklist(tabId, changeInfo, tab);
 
 	if (tab.url) {
@@ -75,7 +75,7 @@ function tabAction(tabId. changeInfo, tab) {
 			url.protocol == "about:" ||
 			url.protocol == "chrome:"
 		) {
-			chrome.browserAction.disable(activeInfo.tabId);
+			chrome.browserAction.disable(tabId);
 		}
 		chrome.storage.sync.set({host: url.host});
 	}
