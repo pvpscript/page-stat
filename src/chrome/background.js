@@ -65,7 +65,22 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	console.log(`Tab with id "${tabId}" was closed!`);
 });
 
-chrome.tabs.onUpdated.addListener(checkBlacklist);
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+	checkBlacklist(tabId, changeInfo, tab);
+
+	const url = new URL(tab.url);
+	chrome.storage.sync.set({host: url.host});
+});
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+	chrome.tabs.get(activeInfo.tabId, (tab) => {
+		checkBlacklist(activeInfo.tabId, null, tab);
+
+		const url = new URL(tab.url);
+		chrome.storage.sync.set({host: url.host});
+	});
+});
+
 chrome.runtime.onInstalled.addListener(function(message, sender, sendResponse) {
 	chrome.storage.sync.set({color: '#3aa757'}, function() {
 		console.log("The color is green");
