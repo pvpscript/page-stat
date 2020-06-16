@@ -47,6 +47,10 @@
   justify-self: end;
 }
 
+.spent {
+  display: none;
+}
+
 .spent .spent-message {
   text-align: center;
   color: #8F0B00;
