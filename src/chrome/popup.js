@@ -3,11 +3,16 @@ const cbSwitch = document.getElementById("switch-shadow");
 const spent = document.getElementById("spent");
 
 cbSwitch.addEventListener('change', (e) => {
-  if (e.target.checked) {
-  	console.log("On");
-  } else {
-  	console.log("Off");
-  }
+	/*
+	chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+		chrome.tabs.sendMessage(tabs[0].id, {
+			call: e.target.checked ? 'unban' : 'ban',
+		});
+	});
+	*/
+	chrome.runtime.sendMessage({
+		call: e.target.checked ? 'unban' : 'ban',
+	});
 });
 
 chrome.storage.sync.get('host', (data) => {
@@ -17,6 +22,9 @@ chrome.storage.sync.get('host', (data) => {
 chrome.storage.sync.get('blacklisted', (data) => {
 	if (!data.blacklisted) {
 		spent.style.display = 'inline';
+		//cbSwitch.checked = true;
+	} else {
+		cbSwitch.checked = false;
 	}
 });
 

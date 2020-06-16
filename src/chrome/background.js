@@ -1,3 +1,4 @@
+/*
 const blacklistRule = {
 	conditions: [new chrome.declarativeContent.PageStateMatcher({
 		pageUrl: {hostEquals: 'developer.chrome.com'},
@@ -14,56 +15,7 @@ const blacklist = fetch(chrome.runtime.getURL("blacklist.json"), {
 		'Accept': 'application/json'
 	}
 }).then(data => data.json());
-
-const regex = new RegExp(/^(([a-zA-Z]*:\/\/(\/)?)?(www\.)?(.+?)(?=(\/|#|\?|$)))/i);
-
-function checkBlacklist(tabId, changeInfo, tab) {
-	//alert(chrome.runtime.getURL("blacklist.json"));
-	//const rawUrl = regex.exec(tab.url)[5];
-	//console.log(tab);
-	
-	if (tab.url.indexOf("https") >= 0) {
-		chrome.storage.sync.set({blacklisted: true}); // stores blacklisted site flag
-		chrome.browserAction.setIcon({tabId: tabId, path:"images/test.png"}, () => {
-			console.log("Icon has been changed");
-		});
-	} else {
-		chrome.storage.sync.set({blacklisted: false});
-	}
-	
-	//chrome.pageAction.show(tabId);
-	/*
-	blacklist.then(list => {
-		if (list.pages.includes(rawUrl)) {
-			//chrome.pageAction.setPopup({popup: "test.html"});
-		}
-	});
-	*/
-}
-
-/*
-chrome.tabs.onActivated.addListener((activeInfo) => {
-	console.log(`tabId: ${activeInfo.tabId}`);
-	console.log(`windowId: ${activeInfo.windowId}`);
-
-	chrome.tabs.get(activeInfo.tabId, (tab) => {
-		console.log(`[get] tab ${tab.id} url -> ${tab.url}`);
-		if (tab.url.indexOf("https") >= 0) {
-			chrome.browserAction.setIcon({tabId: tab.id, path:"images/seiti.png"}, () => {
-				console.log("Icon has been changed");
-			});
-		}
-	});
-});
 */
-
-chrome.tabs.query({}, (tabs) => {
-	console.log(tabs);
-});
-
-chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-	console.log(`Tab with id "${tabId}" was closed!`);
-});
 
 function tabAction(tabId, changeInfo, tab) {
 	checkBlacklist(tabId, changeInfo, tab);
@@ -81,6 +33,33 @@ function tabAction(tabId, changeInfo, tab) {
 	}
 }
 
+
+function checkBlacklist(tabId, changeInfo, tab) {
+	const url = new URL(tab.url);
+
+	chrome.storage.sync.get('blacklist', (data) => {	
+		if (data.blacklist.includes(url.host)) {
+			chrome.storage.sync.set({blacklisted: true}); // stores blacklisted site flag
+			chrome.browserAction.setIcon({
+				tabId: tabId,
+				path:"images/test.png"
+			}, () => {
+				console.log("Icon has been changed");
+			});
+		} else {
+			chrome.storage.sync.set({blacklisted: false});
+		}
+	});
+}
+
+chrome.tabs.query({}, (tabs) => {
+	console.log(tabs);
+});
+
+chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+	console.log(`Tab with id "${tabId}" was closed!`);
+});
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	tabAction(tabId, changeInfo, tab);
 });
@@ -91,9 +70,43 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 	});
 });
 
+const methods = {
+	'ban': (host) => {
+		chrome.storage.sync.get('blacklist', (data) => {
+			data.blacklist.push(host);
+			console.log(data.blacklist);
+			chrome.storage.sync.set({blacklist: data.blacklist});
+		});
+	},
+	'unban': (host) => {
+		chrome.storage.sync.get('blacklist', (data) => {
+			const index = data.blacklist.indexOf(host);
+			data.blacklist.splice(index, 1);
+			console.log(data.blacklist);
+			chrome.storage.sync.set({blacklist: data.blacklist});
+		});
+	}
+}
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+	const action = methods[request.call];
+
+	chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+		const url = new URL(tabs[0].url);
+		action(url.host);
+
+		tabAction(tabs[0].id, null, tabs[0]);
+	});
+
+	console.log(`Request ${JSON.stringify(request)}`);
+	console.log(`Sender ${JSON.stringify(sender)}`);
+});
+
 chrome.runtime.onInstalled.addListener(function(message, sender, sendResponse) {
-	chrome.storage.sync.set({color: '#3aa757'}, function() {
-		console.log("The color is green");
+	chrome.storage.sync.set({
+		blacklist: [],
+	}, () => {
+		console.log("Local data set as empty.");
 	});
 
 	/*chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
