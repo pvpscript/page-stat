@@ -7,9 +7,13 @@
    margin: 2px;
 };
 */
+.content {
+  width: 300px;
+}
+
 .header {
   display: grid;
-  grid-template-columns: max-content 300px;
+  grid-template-columns: max-content auto;
   grid-template-rows: auto auto;
   
   grid-template-areas:
@@ -30,9 +34,11 @@
 
 .header .host-name {
   grid-area: hostname;
-  justify-self: start;
+  color: #06758F;
+  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  text-align: right;
   width: 100%;
 }
 
@@ -41,9 +47,43 @@
   justify-self: end;
 }
 
-.header .status-name {
-  grid-area: statusname;
-  justify-self: start;
+.spent .spent-message {
+  text-align: center;
+  color: #8F0B00;
+  margin: 0;
+}
+
+.spent .spent-time {
+  color: #4A8F06;
+  display: block;
+}
+
+.options > button {
+  display: block;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.options button:not(:last-child) {
+  border-bottom: none;
+}
+
+.footer {
+  display: block;
+}
+
+.footer .credits {
+  margin-top: 10%;
+  border: 1px solid black;
+  overflow: auto;
+}
+
+.footer .by {
+  float: left;
+}
+
+.footer .git-page {
+  float: right;
 }
 
 .switch__container {
@@ -54,7 +94,6 @@
 .switch {
   position: absolute;
   visibility: hidden;
-  justify-self: end;
 }
 
 .switch + label {

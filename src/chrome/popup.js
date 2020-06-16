@@ -2,10 +2,6 @@ const hostname = document.getElementById("hostname");
 const cbSwitch = document.getElementById("switch-shadow");
 
 hostname.innerText = "developer.fourhourworkweek.com";
-hostname.style.color = "#06758F";
-
-//hoststatus.style.color = "#8F0B00";
-//hoststatus.style.color = "#4A8F06";
 
 cbSwitch.addEventListener('change', (e) => {
   if (e.target.checked) {
