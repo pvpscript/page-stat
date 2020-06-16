@@ -1,5 +1,6 @@
 const hostname = document.getElementById("hostname");
 const cbSwitch = document.getElementById("switch-shadow");
+const spent = document.getElementById("spent");
 
 hostname.innerText = "developer.fourhourworkweek.com";
 
@@ -9,6 +10,12 @@ cbSwitch.addEventListener('change', (e) => {
   } else {
   	console.log("Off");
   }
+});
+
+chrome.storage.sync.get('blacklisted', (data) => {
+	if (!data.blacklisted) {
+		spent.style.display = 'inline';
+	}
 });
 
 /*

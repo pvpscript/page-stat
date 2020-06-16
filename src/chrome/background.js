@@ -23,9 +23,12 @@ function checkBlacklist(tabId, changeInfo, tab) {
 	//console.log(tab);
 	
 	if (tab.url.indexOf("https") >= 0) {
+		chrome.storage.sync.set({blacklisted: true}); // stores blacklisted site flag
 		chrome.browserAction.setIcon({tabId: tabId, path:"images/test.png"}, () => {
 			console.log("Icon has been changed");
 		});
+	} else {
+		chrome.storage.sync.set({blacklisted: false});
 	}
 	
 	//chrome.pageAction.show(tabId);
