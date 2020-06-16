@@ -65,7 +65,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	console.log(`Tab with id "${tabId}" was closed!`);
 });
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+function tabAction(tabId. changeInfo, tab) {
 	checkBlacklist(tabId, changeInfo, tab);
 
 	if (tab.url) {
@@ -79,23 +79,15 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		}
 		chrome.storage.sync.set({host: url.host});
 	}
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+	tabAction(tabId, changeInfo, tab);
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
 	chrome.tabs.get(activeInfo.tabId, (tab) => {
-		checkBlacklist(activeInfo.tabId, null, tab);
-
-		if (tab.url) {
-			const url = new URL(tab.url);
-
-			if (
-				url.protocol == "about:" ||
-				url.protocol == "chrome:"
-			) {
-				chrome.browserAction.disable(activeInfo.tabId);
-			}
-			chrome.storage.sync.set({host: url.host});
-		}
+		tabAction(activeInfo.tabId, null, tab);
 	});
 });
 
