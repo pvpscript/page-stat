@@ -68,16 +68,34 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	checkBlacklist(tabId, changeInfo, tab);
 
-	const url = new URL(tab.url);
-	chrome.storage.sync.set({host: url.host});
+	if (tab.url) {
+		const url = new URL(tab.url);
+
+		if (
+			url.protocol == "about:" ||
+			url.protocol == "chrome:"
+		) {
+			chrome.browserAction.disable(activeInfo.tabId);
+		}
+		chrome.storage.sync.set({host: url.host});
+	}
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
 	chrome.tabs.get(activeInfo.tabId, (tab) => {
 		checkBlacklist(activeInfo.tabId, null, tab);
 
-		const url = new URL(tab.url);
-		chrome.storage.sync.set({host: url.host});
+		if (tab.url) {
+			const url = new URL(tab.url);
+
+			if (
+				url.protocol == "about:" ||
+				url.protocol == "chrome:"
+			) {
+				chrome.browserAction.disable(activeInfo.tabId);
+			}
+			chrome.storage.sync.set({host: url.host});
+		}
 	});
 });
 
