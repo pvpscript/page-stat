@@ -58,6 +58,10 @@
   display: block;
 }
 
+.options {
+  margin-top: 5%;
+}
+
 .options > button {
   display: block;
   width: 100%;
