@@ -15,17 +15,25 @@ cbSwitch.addEventListener('change', (e) => {
 	});
 });
 
+const methods = {
+	'inactivated': () => {},
+	'activated': () => {},
+}
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+});
+
 chrome.storage.sync.get('host', (data) => {
 	hostname.innerText = data.host;
 });
 
-chrome.storage.sync.get('blacklisted', (data) => {
-	if (!data.blacklisted) {
-		spent.style.display = 'inline';
-		//cbSwitch.checked = true;
-	} else {
-		cbSwitch.checked = false;
-	}
+chrome.storage.sync.get('inactivated', (data) => {
+	if (!data.inactivated) {
+	spent.style.display = 'inline';
+	//cbSwitch.checked = true;
+} else {
+	cbSwitch.checked = false;
+}
 });
 
 /*

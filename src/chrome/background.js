@@ -1,22 +1,3 @@
-/*
-const blacklistRule = {
-	conditions: [new chrome.declarativeContent.PageStateMatcher({
-		pageUrl: {hostEquals: 'developer.chrome.com'},
-	})
-	],
-	actions: []
-};
-
-const blacklist = fetch(chrome.runtime.getURL("blacklist.json"), {
-	method: 'GET',
-	mode: 'cors',
-	cache: 'no-cache',
-	headers: {
-		'Accept': 'application/json'
-	}
-}).then(data => data.json());
-*/
-
 function tabAction(tabId, changeInfo, tab) {
 	if (tab.url) {
 		const url = new URL(tab.url);
@@ -35,9 +16,9 @@ function tabAction(tabId, changeInfo, tab) {
 
 
 function checkBlacklist(tabId, host) {
-	chrome.storage.sync.get('blacklist', (data) => {	
-		if (data.blacklist.includes(host)) {
-			chrome.storage.sync.set({blacklisted: true}); // stores blacklisted site flag
+	chrome.storage.sync.get('inactive', (data) => {	
+		if (data.inactive.includes(host)) {
+			chrome.storage.sync.set({inactivated: true}); // stores inactivated site flag
 			chrome.browserAction.setIcon({
 				tabId: tabId,
 				path:"images/test.png"
@@ -45,7 +26,7 @@ function checkBlacklist(tabId, host) {
 				console.log("Icon has been changed");
 			});
 		} else {
-			chrome.storage.sync.set({blacklisted: false});
+			chrome.storage.sync.set({inactivated: false});
 		}
 	});
 }
@@ -70,18 +51,18 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 
 const methods = {
 	'ban': (host) => {
-		chrome.storage.sync.get('blacklist', (data) => {
-			data.blacklist.push(host);
-			console.log(data.blacklist);
-			chrome.storage.sync.set({blacklist: data.blacklist});
+		chrome.storage.sync.get('inactive', (data) => {
+			data.inactive.push(host);
+			console.log(data.inactive);
+			chrome.storage.sync.set({inactive: data.inactive});
 		});
 	},
 	'unban': (host) => {
-		chrome.storage.sync.get('blacklist', (data) => {
-			const index = data.blacklist.indexOf(host);
-			data.blacklist.splice(index, 1);
-			console.log(data.blacklist);
-			chrome.storage.sync.set({blacklist: data.blacklist});
+		chrome.storage.sync.get('inactive', (data) => {
+			const index = data.inactive.indexOf(host);
+			data.inactive.splice(index, 1);
+			console.log(data.inactive);
+			chrome.storage.sync.set({inactive: data.inactive});
 		});
 	}
 }
@@ -102,7 +83,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 chrome.runtime.onInstalled.addListener(function(message, sender, sendResponse) {
 	chrome.storage.sync.set({
-		blacklist: [],
+		inactive: [],
 	}, () => {
 		console.log("Local data set as empty.");
 	});
