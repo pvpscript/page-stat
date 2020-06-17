@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"description": "Display time usage statistics for accessed pages",
 	"manifest_version": 2,
-	"permissions": ["tabs", "storage", "declarativeContent"],
+	"permissions": ["tabs", "storage", "declarativeContent", "alarms"],
 
 	"icons": {},
 
