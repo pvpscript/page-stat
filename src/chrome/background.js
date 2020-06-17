@@ -18,10 +18,10 @@ const blacklist = fetch(chrome.runtime.getURL("blacklist.json"), {
 */
 
 function tabAction(tabId, changeInfo, tab) {
-	checkBlacklist(tabId, changeInfo, tab);
-
 	if (tab.url) {
 		const url = new URL(tab.url);
+
+		checkBlacklist(tabId, url.host);
 
 		if (
 			url.protocol == "about:" ||
@@ -34,11 +34,9 @@ function tabAction(tabId, changeInfo, tab) {
 }
 
 
-function checkBlacklist(tabId, changeInfo, tab) {
-	const url = new URL(tab.url);
-
+function checkBlacklist(tabId, host) {
 	chrome.storage.sync.get('blacklist', (data) => {	
-		if (data.blacklist.includes(url.host)) {
+		if (data.blacklist.includes(host)) {
 			chrome.storage.sync.set({blacklisted: true}); // stores blacklisted site flag
 			chrome.browserAction.setIcon({
 				tabId: tabId,
