@@ -1,3 +1,27 @@
+class Page {
+	constructor(host, favicon) {
+		this.host = host;
+		this.favicon = favicon;
+		this.time = 0;
+	}
+
+	get host() {
+		return this.host;
+	}
+
+	get favicon() {
+		return this.favicon;
+	}
+
+	setTime(time) {
+		this.time = time;
+	}
+
+	get time() {
+		return this.time;
+	}
+}
+
 function changeIcon(tabId, iconPath) {
 	chrome.browserAction.setIcon({
 		tabId: tabId,
@@ -58,7 +82,7 @@ async function checkStatus(host) {
 }
 
 async function tabAction(tab) {
-	if (tab.url) {
+	if (tab) {
 		const url = new URL(tab.url);
 
 		if (
