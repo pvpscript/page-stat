@@ -1,27 +1,3 @@
-class Page {
-	constructor(host, favicon) {
-		this.host = host;
-		this.favicon = favicon;
-		this.time = 0;
-	}
-
-	get host() {
-		return this.host;
-	}
-
-	get favicon() {
-		return this.favicon;
-	}
-
-	setTime(time) {
-		this.time = time;
-	}
-
-	get time() {
-		return this.time;
-	}
-}
-
 function changeIcon(tabId, iconPath) {
 	chrome.browserAction.setIcon({
 		tabId: tabId,
@@ -36,11 +12,23 @@ const methods = {
 		const url = new URL(tab.url);
 		const pageStat = await checkStatus(url.host);
 
+		chrome.storage.sync.get('pages', (obj) => {
+			const page = obj.pages.filter(page => page.host === url.host)[0];
+
+			callback({
+				host: page.host,
+				time: page.time,
+				pageStat: pageStat,
+			});
+		});
+
+			/*
 		callback({
 			host: url.host,
 			pageStat: pageStat,
 			time: 0,
 		});
+		*/
 	},
 	change: async (tab, callback, data) => {
 		const url = new URL(tab.url);
@@ -82,7 +70,7 @@ async function checkStatus(host) {
 }
 
 async function tabAction(tab) {
-	if (tab) {
+	if (tab.url) {
 		const url = new URL(tab.url);
 
 		if (
@@ -95,6 +83,24 @@ async function tabAction(tab) {
 			changeIcon(tab.id, pageStat
 				? "images/graph_icon128.png"
 				: "images/test.png");
+
+			chrome.storage.sync.get(['pages'], (obj) => {
+				const page = obj.pages.filter(page => page.host === url.host);
+
+				if (page.length == 0) {
+					obj.pages.push({
+						host: url.host,
+						favicon: tab.favIconUrl,
+						time: 0,
+						tabs: [tab.id],
+					});
+				} else if (!page[0].tabs.includes(tab.id)) {
+					page[0].tabs.push(tab.id);
+				}
+
+				chrome.storage.sync.set({pages: obj.pages});
+				console.log(obj.pages);
+			});
 		}
 	}
 }
@@ -112,6 +118,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 	chrome.storage.sync.set({
 		inactive: [],
+		pages: [],
 	}, () => {
 		console.log("Local data set as empty.");
 	});
