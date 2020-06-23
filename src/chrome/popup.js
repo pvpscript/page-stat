@@ -14,6 +14,7 @@ cbSwitch.addEventListener('change', (e) => {
 chrome.runtime.sendMessage({type: 'handshake', data: null}, (response) => {
 	hostname.innerText = response.host;
 	cbSwitch.checked = response.pageStat;
+
 	if (response.pageStat) {
 		spentSection.style.display = 'inline';
 		spentTime.innerText = getFormattedTime(response.time);
@@ -27,7 +28,9 @@ function getFormattedTime(time) {
 	const mins = Math.floor((time - hours * 3600) / 60);
 	const secs = time - hours * 3600 - mins * 60;
 
-	return ("0"+hours).slice(-2) +
-		":" + ("0"+mins).slice(-2) +
-		":" + ("0"+secs).slice(-2);
+	console.log(time);
+
+	return ("0"+hours).slice(0, 2) +
+		":" + ("0"+mins).slice(0, 2) +
+		":" + ("0"+secs).slice(0, 2);
 }
