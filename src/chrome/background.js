@@ -17,7 +17,7 @@ const methods = {
 
 			callback({
 				host: page.host,
-				time: page.time,
+				time: (Date.now() - page.time) / 1000,
 				pageStat: pageStat,
 			});
 		});
@@ -91,7 +91,7 @@ async function tabAction(tab) {
 					obj.pages.push({
 						host: url.host,
 						favicon: tab.favIconUrl,
-						time: 0,
+						time: Date.now(), 
 						tabs: [tab.id],
 					});
 				} else if (!page[0].tabs.includes(tab.id)) {
