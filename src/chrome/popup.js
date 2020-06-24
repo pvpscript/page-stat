@@ -26,11 +26,9 @@ chrome.runtime.sendMessage({type: 'handshake', data: null}, (response) => {
 function getFormattedTime(time) {
 	const hours = Math.floor(time / 3600);
 	const mins = Math.floor((time - hours * 3600) / 60);
-	const secs = time - hours * 3600 - mins * 60;
+	const secs = Math.floor(time - hours * 3600 - mins * 60);
 
-	console.log(time);
-
-	return ("0"+hours).slice(0, 2) +
-		":" + ("0"+mins).slice(0, 2) +
-		":" + ("0"+secs).slice(0, 2);
+	return ("0"+hours).slice(-2) +
+		":" + ("0"+mins).slice(-2) +
+		":" + ("0"+secs).slice(-2);
 }
