@@ -1,3 +1,24 @@
+const pages = new Map();
+/* Maps a hostname to an object containing the time the host was first opened,
+ * and the tabs associated with it
+ *
+ * scheme:
+ * {
+ * 	host => {
+ * 		startTime: startTime,
+ * 		tabs: [],
+ * 	}
+ * }
+ */
+
+const tabIdToHost = new Map();
+/* Maps a tab id to a host name to enable quick check for a tab -> host relationship
+ *
+ * scheme:
+ * { tabId => host }
+ *
+ */
+
 function changeIcon(tabId, iconPath) {
 	chrome.browserAction.setIcon({
 		tabId: tabId,
@@ -11,7 +32,17 @@ const methods = {
 	handshake: async (tab, callback, data) => {
 		const url = new URL(tab.url);
 		const pageStat = await checkStatus(url.host);
+		const page = pages.get(url.host);
 
+		console.log(`Timereth: ${page.startTime}`);
+		console.log(`Nozinho: ${(Date.now() - page.startTime) / 1000}`);
+
+		callback({
+			host: page.host,
+			time: (Date.now() - page.startTime) / 1000,
+			pageStat: pageStat,
+		});
+		/*
 		chrome.storage.sync.get('pages', (obj) => {
 			const page = obj.pages.filter(page => page.host === url.host)[0];
 
@@ -69,7 +100,58 @@ async function checkStatus(host) {
 	});
 }
 
-async function tabAction(tab) {
+function defaultPageAction(tab, url) {
+	chrome.storage.sync.get(['pageData'], (obj) => {
+		console.log("Page data stufferino below");
+		console.log(obj.pageData);
+		const page = pages.get(url.host);
+		const hostRef = tabIdToHost.get(tab.id);
+		
+		console.log();
+		console.log(`-------->>> ${page}`);
+		if (!page) {
+			pages.set(url.host, {
+				startTime: Date.now(),
+			});
+
+			console.log();
+			console.log();
+			console.log(`klasp: ${obj.pageData[url.host]}`);
+			if (!obj.pageData[url.host]) {
+				console.log("some random info");
+				obj.pageData[url.host] = {
+					favicon: tab.favIconUrl,
+					time: 0,
+				}
+			}
+			console.log(`-'-------------------${tab.id}`);
+		}
+		console.log(`-------->>> ${page}`);
+
+		if (hostRef && hostRef != url.host) {
+			const oldPage = pages.get(hostRef);
+			const hostData = obj.pageData[hostRef];
+
+			hostData.time += Date.now() - oldPage.startTime;
+			console.log(`NHEIMMMMMMMMMMMMMMMMMMMMMMMMM: ${hostData.time}`);
+
+			console.log(`The letou: ${hostRef}`);
+			pages.delete(hostRef);
+		}
+		tabIdToHost.set(tab.id, url.host);
+
+		chrome.storage.sync.set({pageData: obj.pageData});
+		console.log(obj.pageData);
+		chrome.storage.sync.get(['pageData'], (kk) => {
+			console.log("started");
+			console.log(kk.pageData)
+			console.log("ended");
+		});
+		console.log("--------------------------------------------------------------------------------");
+	});
+}
+
+async function tabAction(tab, pageAction) {
 	if (tab.url) {
 		const url = new URL(tab.url);
 
@@ -84,41 +166,55 @@ async function tabAction(tab) {
 				? "images/graph_icon128.png"
 				: "images/test.png");
 
-			chrome.storage.sync.get(['pages'], (obj) => {
-				const page = obj.pages.filter(page => page.host === url.host);
-
-				if (page.length == 0) {
-					obj.pages.push({
-						host: url.host,
-						favicon: tab.favIconUrl,
-						time: Date.now(), 
-						tabs: [tab.id],
-					});
-				} else if (!page[0].tabs.includes(tab.id)) {
-					page[0].tabs.push(tab.id);
-				}
-
-				chrome.storage.sync.set({pages: obj.pages});
-				console.log(obj.pages);
-			});
+			await pageAction(tab, url);
 		}
 	}
 }
 
+let favicon = false;
+let complete = false;
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-	tabAction(tab);
+	favicon = favicon || changeInfo.favIconUrl != undefined;
+	complete = complete || changeInfo.status === "complete";
+
+	if (complete && favicon) {
+		favicon = complete = false;
+		tabAction(tab, defaultPageAction);
+	}
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
 	chrome.tabs.get(activeInfo.tabId, (tab) => {
-		tabAction(tab);
+		tabAction(tab, defaultPageAction);
 	});
 });
 
+chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+	/*
+	chrome.storage.sync.get('pages', (obj) => {
+		for (let page of obj.pages) {
+
+		}
+	});
+	*/
+});
+
+/*
+ * pageData is a map that will be kept in the chrome persistent storage.
+ * This map associates a host name with its favicon url and total usage time.
+ *
+ * scheme:
+ * {
+ * 	host => {
+ * 		favicon: favIconUrl,
+ * 		time: usageTime,
+ * 	}
+ * }
+ */
 chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 	chrome.storage.sync.set({
 		inactive: [],
-		pages: [],
+		pageData: {}, 
 	}, () => {
 		console.log("Local data set as empty.");
 	});
