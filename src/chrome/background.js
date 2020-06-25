@@ -19,10 +19,17 @@ const tabIdToHost = new Map();
  *
  */
 
-function changeIcon(tabId, iconPath) {
+function changeIcon(tabId, suffix) {
+	const icons = {
+		16: `images/icon16${suffix}.png`,
+		32: `images/icon32${suffix}.png`,
+		48: `images/icon48${suffix}.png`,
+		128: `images/icon128${suffix}.png`,
+	};
+
 	chrome.browserAction.setIcon({
 		tabId: tabId,
-		path: iconPath
+		path: icons,
 	}, () => {
 		console.log("Icon has been changed");
 	});
@@ -48,11 +55,11 @@ const methods = {
 		chrome.storage.sync.get('inactive', (obj) => {
 			if (data.deactivate) {
 				obj.inactive.push(url.host);
-				changeIcon(tab.id, "images/icon128-disabled.png");
+				changeIcon(tab.id, "-disabled");
 			} else {
 				const index = obj.inactive.indexOf(url.host);
 				obj.inactive.splice(index, 1);
-				changeIcon(tab.id, "images/icon128.png");
+				changeIcon(tab.id, "");
 			}
 			chrome.storage.sync.set({inactive: obj.inactive});
 		});
@@ -139,12 +146,25 @@ async function tabAction(tab, pageAction) {
 		console.log("VALID!");
 		const pageStat = await checkStatus(url.host);
 		changeIcon(tab.id, pageStat
-			? "images/icon128.png"
-			: "images/icon128-disabled.png");
+			? ""
+			: "-disabled");
 
 		await pageAction(tab, url);
 	} else {
-		chrome.browserAction.disable(tab.id);
+		changeIcon(tab.id, "-off");
+		chrome.storage.sync.get(['pageData'], (obj) => {
+			const focusedPage = pages.get(tab.windowId);
+
+			if (focusedPage) {
+				const pageData = obj.pageData[focusedPage.host];
+				pageData.time += Date.now() - focusedPage.startTime;
+
+				pages.delete(tab.windowId);
+
+				chrome.storage.sync.set({pageData: obj.pageData});
+				console.log(obj.pageData);
+			}
+		});
 	}
 }
 
