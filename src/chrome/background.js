@@ -32,7 +32,7 @@ const methods = {
 	handshake: async (tab, callback, data) => {
 		const url = new URL(tab.url);
 		const pageStat = await checkStatus(url.host);
-		const page = pages.get(url.host);
+		const page = pages.get(tab.windowId);
 
 		console.log(`Timereth: ${page.startTime}`);
 		console.log(`Nozinho: ${(Date.now() - page.startTime) / 1000}`);
@@ -100,6 +100,7 @@ async function checkStatus(host) {
 	});
 }
 
+/*
 function defaultPageAction(tab, url) {
 	chrome.storage.sync.get(['pageData'], (obj) => {
 		console.log("Page data stufferino below");
@@ -150,6 +151,37 @@ function defaultPageAction(tab, url) {
 		console.log("--------------------------------------------------------------------------------");
 	});
 }
+*/
+
+function defaultPageAction(tab, url) {
+	// Create a more general function to change a page usage time, based on host unfocus.
+	chrome.storage.sync.get(['pageData'], (obj) => {
+		if (!obj.pageData[url.host]) {
+			obj.pageData[url.host] = {
+				favicon: tab.favIconUrl,
+				time: 0,
+			};
+		}
+
+		const focusedPage = pages.get(tab.windowId);
+		
+		if (!focusedPage) {
+			pages.set(tab.windowId, {
+				startTime: Date.now(),
+				host: url.host,
+			});
+		} else if (focusedPage.host != url.host) {
+			const pageData = obj.pageData[focusedPage.host];
+			pageData.time += Date.now() - focusedPage.startTime;
+
+			focusedPage.startTime = Date.now();
+			focusedPage.host = url.host;
+		}
+		
+		chrome.storage.sync.set({pageData: obj.pageData});
+		console.log(obj.pageData);
+	});
+}
 
 async function tabAction(tab, pageAction) {
 	if (tab.url) {
@@ -180,12 +212,14 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	if (complete && favicon) {
 		favicon = complete = false;
 		tabAction(tab, defaultPageAction);
+		//console.log(`Updated ${tab.url}`);
 	}
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
 	chrome.tabs.get(activeInfo.tabId, (tab) => {
 		tabAction(tab, defaultPageAction);
+		//console.log(`Activated: ${tab.url}`);
 	});
 });
 
