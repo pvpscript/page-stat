@@ -48,11 +48,11 @@ const methods = {
 		chrome.storage.sync.get('inactive', (obj) => {
 			if (data.deactivate) {
 				obj.inactive.push(url.host);
-				changeIcon(tab.id, "images/test.png");
+				changeIcon(tab.id, "images/icon128-disabled.png");
 			} else {
 				const index = obj.inactive.indexOf(url.host);
 				obj.inactive.splice(index, 1);
-				changeIcon(tab.id, "images/graph_icon128.png");
+				changeIcon(tab.id, "images/icon128.png");
 			}
 			chrome.storage.sync.set({inactive: obj.inactive});
 		});
@@ -139,8 +139,8 @@ async function tabAction(tab, pageAction) {
 		console.log("VALID!");
 		const pageStat = await checkStatus(url.host);
 		changeIcon(tab.id, pageStat
-			? "images/graph_icon128.png"
-			: "images/test.png");
+			? "images/icon128.png"
+			: "images/icon128-disabled.png");
 
 		await pageAction(tab, url);
 	} else {
@@ -171,13 +171,6 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 });
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-	/*
-	chrome.storage.sync.get('pages', (obj) => {
-		for (let page of obj.pages) {
-
-		}
-	});
-	*/
 	/*
 	console.log(`Tab ID: ${tabId}`);
 	console.log("Remove info");
