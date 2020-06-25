@@ -42,24 +42,6 @@ const methods = {
 			time: (Date.now() - page.startTime) / 1000,
 			pageStat: pageStat,
 		});
-		/*
-		chrome.storage.sync.get('pages', (obj) => {
-			const page = obj.pages.filter(page => page.host === url.host)[0];
-
-			callback({
-				host: page.host,
-				time: (Date.now() - page.time) / 1000,
-				pageStat: pageStat,
-			});
-		});
-
-			/*
-		callback({
-			host: url.host,
-			pageStat: pageStat,
-			time: 0,
-		});
-		*/
 	},
 	change: async (tab, callback, data) => {
 		const url = new URL(tab.url);
@@ -99,59 +81,6 @@ async function checkStatus(host) {
 		}
 	});
 }
-
-/*
-function defaultPageAction(tab, url) {
-	chrome.storage.sync.get(['pageData'], (obj) => {
-		console.log("Page data stufferino below");
-		console.log(obj.pageData);
-		const page = pages.get(url.host);
-		const hostRef = tabIdToHost.get(tab.id);
-		
-		console.log();
-		console.log(`-------->>> ${page}`);
-		if (!page) {
-			pages.set(url.host, {
-				startTime: Date.now(),
-			});
-
-			console.log();
-			console.log();
-			console.log(`klasp: ${obj.pageData[url.host]}`);
-			if (!obj.pageData[url.host]) {
-				console.log("some random info");
-				obj.pageData[url.host] = {
-					favicon: tab.favIconUrl,
-					time: 0,
-				}
-			}
-			console.log(`-'-------------------${tab.id}`);
-		}
-		console.log(`-------->>> ${page}`);
-
-		if (hostRef && hostRef != url.host) {
-			const oldPage = pages.get(hostRef);
-			const hostData = obj.pageData[hostRef];
-
-			hostData.time += Date.now() - oldPage.startTime;
-			console.log(`NHEIMMMMMMMMMMMMMMMMMMMMMMMMM: ${hostData.time}`);
-
-			console.log(`The letou: ${hostRef}`);
-			pages.delete(hostRef);
-		}
-		tabIdToHost.set(tab.id, url.host);
-
-		chrome.storage.sync.set({pageData: obj.pageData});
-		console.log(obj.pageData);
-		chrome.storage.sync.get(['pageData'], (kk) => {
-			console.log("started");
-			console.log(kk.pageData)
-			console.log("ended");
-		});
-		console.log("--------------------------------------------------------------------------------");
-	});
-}
-*/
 
 function defaultPageAction(tab, url) {
 	// Create a more general function to change a page usage time, based on host unfocus.
@@ -204,23 +133,16 @@ function isValidURL(url) {
 }
 
 async function tabAction(tab, pageAction) {
-	console.log("Manah Manah");
-	console.log(tab);
 	const url = buildURL(tab.url);
-	if (isValidURL(url)) {
-		if (
-			url.protocol == "about:" ||
-			url.protocol == "chrome:"
-		) {
-			chrome.browserAction.disable(tab.id);
-		} else {
-			const pageStat = await checkStatus(url.host);
-			changeIcon(tab.id, pageStat
-				? "images/graph_icon128.png"
-				: "images/test.png");
 
-			await pageAction(tab, url);
-		}
+	if (isValidURL(url)) {
+		console.log("VALID!");
+		const pageStat = await checkStatus(url.host);
+		changeIcon(tab.id, pageStat
+			? "images/graph_icon128.png"
+			: "images/test.png");
+
+		await pageAction(tab, url);
 	} else {
 		chrome.browserAction.disable(tab.id);
 	}
@@ -240,6 +162,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
+	console.log("Active Info");
+	console.log(activeInfo);
 	chrome.tabs.get(activeInfo.tabId, (tab) => {
 		tabAction(tab, defaultPageAction);
 		//console.log(`Activated: ${tab.url}`);
