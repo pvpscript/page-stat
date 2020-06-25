@@ -183,10 +183,31 @@ function defaultPageAction(tab, url) {
 	});
 }
 
-async function tabAction(tab, pageAction) {
-	if (tab.url) {
-		const url = new URL(tab.url);
+function buildURL(url) {
+	try {
+		return new URL(url);
+	} catch (e) {
+	}
 
+	return null;
+}
+
+function isValidURL(url) {
+	if (url) {
+		return !(url.protocol == "about:" ||
+			url.protocol == "chrome:");
+	} else {
+		return false;
+	}
+
+	return true;
+}
+
+async function tabAction(tab, pageAction) {
+	console.log("Manah Manah");
+	console.log(tab);
+	const url = buildURL(tab.url);
+	if (isValidURL(url)) {
 		if (
 			url.protocol == "about:" ||
 			url.protocol == "chrome:"
@@ -200,6 +221,8 @@ async function tabAction(tab, pageAction) {
 
 			await pageAction(tab, url);
 		}
+	} else {
+		chrome.browserAction.disable(tab.id);
 	}
 }
 
@@ -230,6 +253,11 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 
 		}
 	});
+	*/
+	/*
+	console.log(`Tab ID: ${tabId}`);
+	console.log("Remove info");
+	console.log(removeInfo);
 	*/
 });
 
