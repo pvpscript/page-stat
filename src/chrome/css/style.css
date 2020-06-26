@@ -9,6 +9,7 @@
 */
 body {
   width: 300px;
+  margin: 0;
 }
 
 .header {
@@ -70,6 +71,8 @@ body {
   display: block;
   width: 100%;
   border: 1px solid black;
+  border-left: none;
+  border-right: none;
 }
 
 .options button:not(:last-child) {
@@ -81,8 +84,8 @@ body {
 }
 
 .footer .credits {
-  margin-top: 10%;
-  border: 1px solid black;
+  margin-bottom: 0;
+  border-top: 2px solid black;
   overflow: auto;
 }
 

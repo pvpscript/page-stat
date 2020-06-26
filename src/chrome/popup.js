@@ -1,3 +1,7 @@
+const header = document.getElementById("header");
+const content = document.getElementById("content");
+const footer = document.getElementById("footer");
+
 const hostname = document.getElementById("hostname");
 const cbSwitch = document.getElementById("switch-shadow");
 const spentSection = document.getElementById("spent");
@@ -12,14 +16,19 @@ cbSwitch.addEventListener('change', (e) => {
 });
 
 chrome.runtime.sendMessage({type: 'handshake', data: null}, (response) => {
-	hostname.innerText = response.host;
-	cbSwitch.checked = response.pageStat;
-
-	if (response.pageStat) {
-		spentSection.style.display = 'inline';
-		spentTime.innerText = getFormattedTime(response.time);
+	if (response.host == null) {
+		header.style.display = 'none';
+		content.style.display = 'none';
 	} else {
-		spentSection.style.display = 'none';
+		hostname.innerText = response.host;
+		cbSwitch.checked = response.pageStat;
+
+		if (response.pageStat) {
+			spentSection.style.display = 'inline';
+			spentTime.innerText = getFormattedTime(response.time);
+		} else {
+			spentSection.style.display = 'none';
+		}
 	}
 });
 
