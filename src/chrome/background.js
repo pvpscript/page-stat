@@ -103,41 +103,7 @@ async function checkStatus(host) {
 	});
 }
 
-function defaultPageAction(tab, url) {
-	// Create a more general function to change a page usage time, based on host unfocus.
-	chrome.storage.sync.get(['pageData'], async (obj) => {
-		if (!obj.pageData[url.host]) {
-			obj.pageData[url.host] = {
-				favicon: tab.favIconUrl,
-				time: 0,
-			};
-		}
-
-		const lastFocused = pages.get(tab.windowId);
-		
-		if (!lastFocused) {
-			pages.set(tab.windowId, {
-				startTime: Date.now(),
-				host: url.host,
-			});
-		} else {
-			const focusedStat = await checkStatus(lastFocused.host);
-
-			if (lastFocused.host != url.host && focusedStat) {
-				const pageData = obj.pageData[lastFocused.host];
-				pageData.time += Date.now() - lastFocused.startTime;
-
-				lastFocused.startTime = Date.now();
-				lastFocused.host = url.host;
-			}
-		}
-		
-		chrome.storage.sync.set({pageData: obj.pageData});
-		console.log(obj.pageData);
-	});
-}
-
-function moreTest(tab, url) {
+function pageAction(tab, url) {
 	chrome.storage.sync.get(['pageData'], async (obj) => {
 		if (!obj.pageData[url.host]) {
 			obj.pageData[url.host] = {
@@ -199,9 +165,7 @@ async function tabAction(tab, pageAction) {
 		console.log(`Status: ${pageStat ? "true" : "false"}`);
 
 		changeIcon(tab.id, pageStat ? "" : "-disabled");
-		moreTest(tab, url);
-
-		//await pageAction(tab, url);
+		pageAction(tab, url);
 	} else {
 		changeIcon(tab.id, "-off");
 		chrome.storage.sync.get(['pageData'], (obj) => {
