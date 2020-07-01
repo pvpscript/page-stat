@@ -20,6 +20,9 @@ chrome.runtime.sendMessage({type: 'handshake', data: null}, (response) => {
 		header.style.display = 'none';
 		content.style.display = 'none';
 	} else {
+		header.style.display = 'grid';
+		content.style.display = 'inline';
+
 		hostname.innerText = response.host;
 		cbSwitch.checked = response.pageStat;
 
