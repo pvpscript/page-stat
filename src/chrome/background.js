@@ -154,7 +154,23 @@ function isValidURL(url) {
 	return true;
 }
 
-async function tabAction(tab, pageAction) {
+function updatePageData(windowId) {
+	chrome.storage.sync.get(['pageData'], (obj) => {
+		const lastFocused = pages.get(windowId);
+
+		if (lastFocused) {
+			const pageData = obj.pageData[lastFocused.host];
+			pageData.time += Date.now() - lastFocused.startTime;
+
+			pages.delete(windowId);
+
+			chrome.storage.sync.set({pageData: obj.pageData});
+			console.log(obj.pageData);
+		}
+	});
+}
+
+async function tabAction(tab) {
 	const url = buildURL(tab.url);
 
 	console.log(`Tab id: ${tab.id}`);
@@ -168,19 +184,7 @@ async function tabAction(tab, pageAction) {
 		pageAction(tab, url);
 	} else {
 		changeIcon(tab.id, "-off");
-		chrome.storage.sync.get(['pageData'], (obj) => {
-			const lastFocused = pages.get(tab.windowId);
-
-			if (lastFocused) {
-				const pageData = obj.pageData[lastFocused.host];
-				pageData.time += Date.now() - lastFocused.startTime;
-
-				pages.delete(tab.windowId);
-
-				chrome.storage.sync.set({pageData: obj.pageData});
-				console.log(obj.pageData);
-			}
-		});
+		updatePageData(tab.windowId);
 	}
 }
 
@@ -192,7 +196,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 	if (complete && favicon) {
 		favicon = complete = false;
-		tabAction(tab, defaultPageAction);
+		tabAction(tab);
 		console.log(`Updated ${tab.url}`);
 	}
 });
@@ -201,12 +205,13 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 	//console.log("Active Info");
 	//console.log(activeInfo);
 	chrome.tabs.get(activeInfo.tabId, (tab) => {
-		tabAction(tab, defaultPageAction);
+		tabAction(tab);
 		console.log(`Activated: ${tab.url}`);
 	});
 });
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+	updatePageData(removeInfo.windowId);
 	/*
 	console.log(`Tab ID: ${tabId}`);
 	console.log("Remove info");
