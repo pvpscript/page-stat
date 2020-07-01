@@ -210,8 +210,9 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 	});
 });
 
-chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-	updatePageData(removeInfo.windowId);
+//chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+chrome.windows.onRemoved.addListener((windowId) => {
+	updatePageData(windowId);
 	/*
 	console.log(`Tab ID: ${tabId}`);
 	console.log("Remove info");
