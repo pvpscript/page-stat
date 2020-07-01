@@ -62,16 +62,14 @@ const methods = {
 				
 				obj.inactive.push(url.host);
 				changeIcon(tab.id, "-disabled");
-				pages.delete(tab.windowId);
 			} else {
 				const index = obj.inactive.indexOf(url.host);
 				obj.inactive.splice(index, 1);
 				changeIcon(tab.id, "");
 
-				pages.set(tab.windowId, {
-					startTime: Date.now(),
-					host: url.host,
-				});
+				const page = pages.get(tab.windowId);
+				page.startTime = Date.now();
+				page.host = url.host;
 
 			}
 			chrome.storage.sync.set({
@@ -140,7 +138,7 @@ function defaultPageAction(tab, url) {
 }
 
 function moreTest(tab, url) {
-	chrome.storage.sync.get(['pageData'], (obj) => {
+	chrome.storage.sync.get(['pageData'], async (obj) => {
 		if (!obj.pageData[url.host]) {
 			obj.pageData[url.host] = {
 				favicon: tab.favIconUrl,
@@ -149,8 +147,6 @@ function moreTest(tab, url) {
 		}
 
 		const lastFocused = pages.get(tab.windowId);
-		console.log("Last focused");
-		console.log(lastFocused);
 
 		if (!lastFocused) {
 			pages.set(tab.windowId, {
@@ -158,8 +154,10 @@ function moreTest(tab, url) {
 				host: url.host,
 			});
 		} else if (lastFocused.host != url.host) {
-			const lastPage = obj.pageData[lastFocused.host];
-			lastPage.time += Date.now() - lastFocused.startTime;
+			if (await checkStatus(lastFocused.host)) {
+				const lastPage = obj.pageData[lastFocused.host];
+				lastPage.time += Date.now() - lastFocused.startTime;
+			}
 
 			lastFocused.startTime = Date.now();
 			lastFocused.host = url.host;
@@ -200,12 +198,8 @@ async function tabAction(tab, pageAction) {
 		const pageStat = await checkStatus(url.host);
 		console.log(`Status: ${pageStat ? "true" : "false"}`);
 
-		if (pageStat) {
-			changeIcon(tab.id, "");
-			moreTest(tab, url);
-		} else {
-			changeIcon(tab.id, "-disabled");
-		}
+		changeIcon(tab.id, pageStat ? "" : "-disabled");
+		moreTest(tab, url);
 
 		//await pageAction(tab, url);
 	} else {
