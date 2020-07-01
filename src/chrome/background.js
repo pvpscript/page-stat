@@ -37,20 +37,31 @@ function changeIcon(tabId, suffix) {
 
 const methods = {
 	handshake: async (tab, callback, data) => {
-		const url = new URL(tab.url);
-		const pageStat = await checkStatus(url.host);
 		const page = pages.get(tab.windowId);
 
-		console.log(`Page: ${page}`);
+		if (page) {
+			const url = new URL(tab.url);
+			const pageStat = await checkStatus(url.host);
 
-		//console.log(`Timereth: ${page.startTime}`);
-		//console.log(`Nozinho: ${(Date.now() - page.startTime) / 1000}`);
+			console.log(`zzzzzzzzzzzzzzzzzzzzzzzz -> Page: ${page}`);
+			console.log(url);
 
-		callback({
-			host: page ? page.host : null,
-			time: page ? (Date.now() - page.startTime) / 1000 : -1,
-			pageStat: pageStat,
-		});
+			//console.log(`Timereth: ${page.startTime}`);
+			//console.log(`Nozinho: ${(Date.now() - page.startTime) / 1000}`);
+
+			callback({
+				host: page.host,
+				time: (Date.now() - page.startTime) / 1000,
+				pageStat: pageStat,
+			});
+		} else {
+			callback({
+				host: null,
+				time: -1,
+				pageStat: false,
+			});
+		}
+
 	},
 	change: async (tab, callback, data) => {
 		const url = new URL(tab.url);
@@ -193,6 +204,9 @@ let complete = false;
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	favicon = favicon || changeInfo.favIconUrl != undefined;
 	complete = complete || changeInfo.status === "complete";
+
+	console.log(`FAVICON: ${favicon}`);
+	console.log(`COMPLETE: ${complete}`);
 
 	if (complete && favicon) {
 		favicon = complete = false;
