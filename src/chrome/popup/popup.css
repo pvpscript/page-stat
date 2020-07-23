@@ -9,7 +9,12 @@
 */
 body {
   width: 300px;
+  height: 200px;
   margin: 0;
+}
+
+.content {
+  width: 300px;
 }
 
 .header {
@@ -48,10 +53,6 @@ body {
   justify-self: end;
 }
 
-.spent {
-  display: none;
-}
-
 .spent .spent-message {
   text-align: center;
   color: #8F0B00;
@@ -65,6 +66,9 @@ body {
 
 .options {
   margin-top: 5%;
+  position: fixed;
+  width: 300px;
+  bottom: 0;
 }
 
 .options > button {
@@ -77,24 +81,6 @@ body {
 
 .options button:not(:last-child) {
   border-bottom: none;
-}
-
-.footer {
-  display: block;
-}
-
-.footer .credits {
-  margin-bottom: 0;
-  border-top: 2px solid black;
-  overflow: auto;
-}
-
-.footer .by {
-  float: left;
-}
-
-.footer .git-page {
-  float: right;
 }
 
 .switch__container {
