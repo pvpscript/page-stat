@@ -21,10 +21,10 @@ const tabIdToHost = new Map();
 
 function changeIcon(tabId, suffix) {
 	const icons = {
-		16: `images/icon16${suffix}.png`,
-		32: `images/icon32${suffix}.png`,
-		48: `images/icon48${suffix}.png`,
-		128: `images/icon128${suffix}.png`,
+		16: `icons/icon16${suffix}.png`,
+		32: `icons/icon32${suffix}.png`,
+		48: `icons/icon48${suffix}.png`,
+		128: `icons/icon128${suffix}.png`,
 	};
 
 	chrome.browserAction.setIcon({

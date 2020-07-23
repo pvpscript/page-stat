@@ -3,26 +3,28 @@
 	"version": "0.0.1",
 	"description": "Display time usage statistics for accessed pages",
 	"manifest_version": 2,
-	"permissions": ["tabs", "storage", "declarativeContent", "alarms"],
+	"permissions": [
+		"tabs",
+		"storage",
+		"declarativeContent",
+		"alarms"
+	],
 
-	"icons": {},
+	"icons": {
+		"16": "icons/icon16.png",
+		"32": "icons/icon32.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
+	},
 
 	"background": {
-		"scripts": ["background.js"],
+		"scripts": [
+			"background_scripts/background.js"
+		],
 		"persistent": false
 	},
 	"browser_action": {
-		"default_icon": {
-			"16": "images/icon16.png",
-			"32": "images/icon32.png",
-			"48": "images/icon48.png",
-			"128": "images/icon128.png"
-		},
 		"default_title": "Page usage statistics",
-		"default_popup": "popup.html"
-	},
-
-	"web_accessible_resources": [
-		""
-	]
+		"default_popup": "popup/popup.html"
+	}
 }
