@@ -23,7 +23,8 @@
 			"background_scripts/page.js",
 			"background_scripts/utils.js",
 			"background_scripts/listeners_runtime.js",
-			"background_scripts/listeners_tabs.js"
+			"background_scripts/listeners_tabs.js",
+			"background_scripts/core.js"
 		],
 		"persistent": false
 	},
