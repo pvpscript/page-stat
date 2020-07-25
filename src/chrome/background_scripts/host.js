@@ -5,7 +5,7 @@ class Host {
 	}
 }
 
-function updateHost(host) {
+function updateHostTime(host) {
 	const page = pages[host.host];
 
 	if (page) {
