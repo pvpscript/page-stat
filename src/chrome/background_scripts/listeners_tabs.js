@@ -7,18 +7,17 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 	});
 });
 
+let lastHost = null; /* Used to avoid multiple updates to the same host */
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	const url = buildURL(tab.url);
 
-	console.log(`Tab just got updated: ${url}`);
-	console.log(tab);
+	if (url && url.host != lastHost) {
+		lastHost = url.host;
+		console.log(`Tab just got updated: ${url}`);
+		console.log(tab);
+	}
 });
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-	chrome.tabs.get(tabId, (tab) => { 
-		const url = buildURL(tab.url);
-
-		console.log(`Tab just got removed: ${url}`);
-		console.log(tab);
-	});
+	console.log(`Tab just got removed: ${tabId}`);
 });
