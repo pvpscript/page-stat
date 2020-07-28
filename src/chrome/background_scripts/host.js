@@ -6,11 +6,13 @@ class Host {
 }
 
 function updateHostTime(host) {
-	const page = pages[host.host];
+	const page = pagesCache[host.host];
+	//pagesCache[Math.floor(Math.random()*10)] = Math.random().toString(36);
+
 
 	if (page) {
 		page.time += Date.now() - host.focusedAt;
 	} else {
-		pages[host.host] = new Page(host);
+		pagesCache[host.host] = new Page(host);
 	}
 }
