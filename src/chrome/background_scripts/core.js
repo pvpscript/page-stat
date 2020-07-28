@@ -3,6 +3,19 @@ const focused = new Map();
  *
  * scheme:
  *
- * windowId => host: Host
+ * windowId => Host
  * 
  */
+
+function updateFocus(windowId, currentHost) {
+	const hasFocus = focused[windowId];
+
+	if (!hasFocus) {
+		focused[windowId] = new Host(currentHost);
+	} else if (currentHost != hasFocus.host) {
+		updateHostTime(hasFocus);
+		focused[windowId] = new Host(currentHost);
+	}
+}
+
+
