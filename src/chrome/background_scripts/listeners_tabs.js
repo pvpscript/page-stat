@@ -1,4 +1,5 @@
 let pagesCache = {}; /* Stored pages cache */
+let onUpdatedUrl = null;
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
 	chrome.storage.sync.get(['pages'], (res) => {
@@ -36,6 +37,15 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+	onUpdatedUrl = changeInfo.url || onUpdatedUrl;
+
+	if (changeInfo.status == "complete" && onUpdatedUrl) {
+		onUpdatedUrl = null;
+		urlUpdate(tab);
+	}
+});
+
+function urlUpdate(tab) {
 	chrome.storage.sync.get(['pages'], (res) => {
 		pagesCache = res.pages;
 
@@ -63,7 +73,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
 		*/
 	});
-});
+}
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 	console.log(`Tab just got removed: ${tabId}`);
