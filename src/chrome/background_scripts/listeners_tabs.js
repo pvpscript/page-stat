@@ -6,7 +6,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 		pagesCache = res.pages;
 
 		chrome.tabs.get(activeInfo.tabId, async (tab) => {
-			const url = buildURL(tab.url);
+			const urlContainer = buildURL(tab.url);
 
 			/*
 			console.log("-------------------- Before --------------------");
@@ -14,11 +14,11 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 			console.log("------------------------------------------------");
 			*/
 
-			if (url) {
-				console.log(`Tab just got activated: ${url}`);
+			if (urlContainer) {
+				console.log(`Tab just got activated: ${urlContainer.url}`);
 				console.log(tab);
 
-				await updateFocus(tab.windowId, url.host);
+				await updateFocus(tab.windowId, urlContainer);
 			}
 
 			/*
@@ -51,13 +51,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 			console.log("------------------------------------------------");
 			*/
 
-			const url = buildURL(tab.url);
+			const urlContainer = buildURL(tab.url);
 
-			if (url) {
-				console.log(`Tab just got updated: ${url}`);
+			if (urlContainer) {
+				console.log(`Tab just got updated: ${urlContainer.url}`);
 				console.log(tab);
 
-				await updateFocus(tab.windowId, url.host);
+				await updateFocus(tab.windowId, urlContainer);
 			}
 			/*console.log("-------------------- After --------------------");
 			console.log(pagesCache);
