@@ -8,18 +8,18 @@ const focused = new Map();
  */
 
 async function updateFocus(windowId, urlContainer) {
-	const hasFocus = focused[windowId];
+	const hasFocus = focused.get(windowId);
 	const currentHost = urlContainer.url.host;
 
 	if (urlContainer.stat) {
 		if (!hasFocus) {
-			focused[windowId] = new Host(currentHost);
+			focused.set(windowId, new Host(currentHost));
 		} else if (currentHost != hasFocus.host) {
 			await updateHostTime(hasFocus);
-			focused[windowId] = new Host(currentHost);
+			focused.set(windowId, new Host(currentHost));
 		}
 	} else if (hasFocus) {
-		focused[windowId] = null;
+		focused.set(windowId, null);
 		await updateHostTime(hasFocus);
 	}
 }
