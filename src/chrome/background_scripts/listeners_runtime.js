@@ -4,15 +4,15 @@ const methods = {
 		const host = (new URL(tab.url)).host;
 
 		if (hostStatus) {
-			config.inactive.push(host);
+			configCache.inactive.push(host);
 		} else {
-			const index = config.inactive.indexOf(host);
-			config.inactive.splice(index, 1);
+			const index = configCache.inactive.indexOf(host);
+			configCache.inactive.splice(index, 1);
 		}
 
 		const urlContainer = buildURL(tab.url);
 
-		chrome.storage.sync.set({config: config});
+		chrome.storage.sync.set({config: configCache});
 		await updateFocus(tab.windowId, urlContainer);
 	},
 	popup: async (tab, data, response) => {
@@ -23,6 +23,7 @@ const methods = {
 		if (urlContainer.stat) {
 			await updateHostTime(hasFocus);
 			hasFocus.focusedAt = Date.now();
+			chrome.storage.sync.set({pages: pagesCache});
 		}
 
 		response({
@@ -53,7 +54,7 @@ chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 	});
 });
 
-const config = {
+const configCache = {
 	protocols: ["http", "https", "file", "ftp"], // Valid protocols
 	inactive: [], // Inactive hosts
 };
@@ -61,9 +62,9 @@ const config = {
 chrome.runtime.onStartup.addListener(() => {
 	chrome.storage.sync.get(['config'], (res) => {
 		if (res.config) {
-			config = res.config;
+			configCache = res.config;
 		} else {
-			chrome.storage.sync.set({config: config});
+			chrome.storage.sync.set({config: configCache});
 		}
 	});
 });
