@@ -12,3 +12,16 @@ chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 	});
 });
 
+const config = {
+	protocols: ["http", "https", "file", "ftp"],
+};
+
+chrome.runtime.onStartup.addListener(() => {
+	chrome.storage.sync.get(['config'], (res) => {
+		if (res.config) {
+			config = res.config;
+		} else {
+			chrome.storage.sync.set({config: config});
+		}
+	});
+});
