@@ -3,7 +3,7 @@ function buildURL(url) {
 		const urlObj = new URL(url);
 		const protocol = urlObj.protocol.split(":")[0];
 		const stat = config.protocols.includes(protocol) &&
-			!config.inactive[urlObj.host];
+			!config.inactive.includes(urlObj.host);
 
 		return {
 			url: urlObj,
