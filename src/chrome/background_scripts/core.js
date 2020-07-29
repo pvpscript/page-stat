@@ -7,13 +7,13 @@ const focused = new Map();
  * 
  */
 
-function updateFocus(windowId, currentHost) {
+async function updateFocus(windowId, currentHost) {
 	const hasFocus = focused[windowId];
 
 	if (!hasFocus) {
 		focused[windowId] = new Host(currentHost);
 	} else if (currentHost != hasFocus.host) {
-		updateHostTime(hasFocus);
+		await updateHostTime(hasFocus);
 		focused[windowId] = new Host(currentHost);
 	}
 }
