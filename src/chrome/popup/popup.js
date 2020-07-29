@@ -9,30 +9,27 @@ const spentTime = document.getElementById("spent-time");
 
 cbSwitch.addEventListener('change', (e) => {
 	chrome.runtime.sendMessage({
-		type: 'change',
-		data: {deactivate: !e.target.checked}
-	}, (response) => {
+		type: 'statusChange',
+		data: {hostStatus: !e.target.checked}
 	});
 });
 
-chrome.runtime.sendMessage({type: 'handshake', data: null}, (response) => {
-	if (response.host == null) {
-		header.style.display = 'none';
-		content.style.display = 'none';
-	} else {
-		header.style.display = 'grid';
-		content.style.display = 'inline';
+chrome.runtime.sendMessage({type: "popup", data: null}, (res) => {
+	header.style.display = 'grid';
+	content.style.display = 'inline';
 
-		hostname.innerText = response.host;
-		cbSwitch.checked = response.pageStat;
+	console.log("popup response");
+	console.log(res);
 
-		if (response.pageStat) {
-			spentSection.style.display = 'inline';
-			spentTime.innerText = getFormattedTime(response.time);
-		} else {
-			spentSection.style.display = 'none';
-		}
-	}
+	hostname.innerText = res.host;
+	cbSwitch.checked = res.hostStatus;
+
+	//if (res.hostStatus) {
+		spentSection.style.display = 'inline';
+		spentTime.innerText = getFormattedTime(res.time);
+	//} else {
+	//	spentSection.style.display = 'none';
+	//}
 });
 
 function getFormattedTime(time) {
