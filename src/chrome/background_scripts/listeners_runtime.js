@@ -13,7 +13,8 @@ chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 });
 
 const config = {
-	protocols: ["http", "https", "file", "ftp"],
+	protocols: ["http", "https", "file", "ftp"], // Valid protocols
+	inactive: {}, // Inactive hosts
 };
 
 chrome.runtime.onStartup.addListener(() => {
