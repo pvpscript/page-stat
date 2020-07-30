@@ -59,6 +59,7 @@ chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 const configCache = {
 	protocols: ["http", "https", "file", "ftp"], // Valid protocols
 	inactive: [], // Inactive hosts
+	log: true, // Show log messages
 	/*focusedOnly: true, // Used by the update alarm to update only hosts that are on a focused window*/
 };
 

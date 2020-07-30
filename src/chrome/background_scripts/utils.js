@@ -29,3 +29,12 @@ function today() {
 		(date.getMonth() + 1) + "-" +
 		date.getDate();
 }
+
+function log(msg, logCall) {
+	const call = logCall || console.log;
+
+	if (configCache.log) {
+		call(msg);
+	}
+}
+
