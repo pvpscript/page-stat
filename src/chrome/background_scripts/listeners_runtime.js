@@ -52,11 +52,14 @@ chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 	chrome.storage.sync.set({
 		pages: {}, /* Pages dictionary, with time already computed. */
 	});
+
+	chrome.windows.getLastFocused(null, (win) => currentWindowId = win.id);
 });
 
 const configCache = {
 	protocols: ["http", "https", "file", "ftp"], // Valid protocols
 	inactive: [], // Inactive hosts
+	focusedOnly: true, // Used by the update alarm to update only hosts that are on a focued window
 };
 
 chrome.runtime.onStartup.addListener(() => {
@@ -67,4 +70,6 @@ chrome.runtime.onStartup.addListener(() => {
 			chrome.storage.sync.set({config: configCache});
 		}
 	});
+
+	chrome.windows.getLastFocused(null, (win) => currentWindowId = win.id);
 });
