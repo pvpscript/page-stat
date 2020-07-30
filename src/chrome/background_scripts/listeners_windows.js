@@ -6,7 +6,7 @@ chrome.windows.onFocusChanged.addListener(async (winId) => {
 	const currFocus = focused.get(winId);
 
 	if (lastFocus) {
-		await alarmUpdateHost(lastFocus);
+		await updatePageAndFocusTime(lastFocus);
 	}
 	if (currFocus) {
 		currFocus.focusedAt = Date.now();

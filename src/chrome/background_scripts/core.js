@@ -15,12 +15,12 @@ async function updateFocus(windowId, urlContainer) {
 		if (!hasFocus) {
 			focused.set(windowId, new Host(currentHost));
 		} else if (currentHost != hasFocus.host) {
-			await updateHostTime(hasFocus);
+			await updatePageTime(hasFocus);
 			focused.set(windowId, new Host(currentHost));
 		}
 	} else if (hasFocus) {
 		focused.set(windowId, null);
-		await updateHostTime(hasFocus);
+		await updatePageTime(hasFocus);
 	}
 }
 

@@ -14,3 +14,10 @@ function buildURL(url) {
 
 	return null;
 }
+
+async function updatePageAndFocusTime(host) {
+	await updatePageTime(host);
+	host.focusedAt = Date.now();
+
+	chrome.storage.sync.set({pages: pagesCache});
+}

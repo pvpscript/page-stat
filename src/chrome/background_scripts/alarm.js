@@ -1,18 +1,18 @@
 const alarmAction = {
-	updateHostTime: async () => {
-		console.log("alarm -> updateHostTime");
+	updatePageTime: async () => {
+		console.log("alarm -> updatePageTime");
 		if (configCache.focusedOnly) {
 			chrome.windows.getLastFocused(null, async (win) => {
 				const hasFocus = focused.get(win.id);
 				if (win.focused && hasFocus) {
-					await alarmUpdateHost(hasFocus);
+					await updatePageAndFocusTime(hasFocus);
 				}
 
 			});
 		} else {
 			focused.forEach(async (host) => {
 				if (host) {
-					await alarmUpdateHost(host);
+					await updatePageAndFocusTime(host);
 				}
 			});
 		}
@@ -20,20 +20,12 @@ const alarmAction = {
 	},
 };
 
-async function alarmUpdateHost(host) {
-	await updateHostTime(host);
-	host.focusedAt = Date.now();
-
-	chrome.storage.sync.set({pages: pagesCache});
-}
-
-
 chrome.alarms.onAlarm.addListener(async (alarm) => {
 	const action = alarmAction[alarm.name];
 
 	await action();
 });
 
-chrome.alarms.create("updateHostTime", {
+chrome.alarms.create("updatePageTime", {
 	periodInMinutes: 1
 });

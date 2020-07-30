@@ -21,7 +21,7 @@ const methods = {
 		const hasFocus = focused.get(tab.windowId);
 
 		if (urlContainer.stat) {
-			await updateHostTime(hasFocus);
+			await updatePageTime(hasFocus);
 			hasFocus.focusedAt = Date.now();
 			chrome.storage.sync.set({pages: pagesCache});
 		}

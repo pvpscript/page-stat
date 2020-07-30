@@ -5,7 +5,7 @@ class Host {
 	}
 }
 
-async function updateHostTime(host) {
+async function updatePageTime(host) {
 	const page = pagesCache[host.host];
 	//pagesCache[Math.floor(Math.random()*10)] = Math.random().toString(36);
 
