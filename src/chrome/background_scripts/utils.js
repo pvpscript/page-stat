@@ -22,8 +22,8 @@ async function updatePageAndFocusTime(host) {
 	chrome.storage.sync.set({pages: pagesCache});
 }
 
-function today() {
-	const date = new Date();
+function today(utc) {
+	let date = utc ? new Date(utc) : new Date();
 
 	return date.getFullYear() + "-" +
 		(date.getMonth() + 1) + "-" +

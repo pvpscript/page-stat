@@ -19,17 +19,16 @@ const methods = {
 		const urlContainer = buildURL(tab.url);
 		const host = urlContainer.url.host;
 		const hasFocus = focused.get(tab.windowId);
+		const todayDate = today();
 
 		if (urlContainer.stat) {
-			await updatePageTime(hasFocus);
-			hasFocus.focusedAt = Date.now();
-			chrome.storage.sync.set({pages: pagesCache});
+			await updatePageAndFocusTime(hasFocus);
 		}
 
 		response({
 			host: host,
 			hostStatus: urlContainer.stat,
-			time: pagesCache[host].time / 1000,
+			time: pagesCache[host].time[todayDate] / 1000,
 		});
 	},
 };
