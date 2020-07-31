@@ -25,10 +25,14 @@ const methods = {
 			await updatePageAndFocusTime(hasFocus);
 		}
 
+		const time = pagesCache[host]
+			? pagesCache[host].time[todayDate] / 1000
+			: -1;
+
 		response({
 			host: host,
 			hostStatus: urlContainer.stat,
-			time: pagesCache[host].time[todayDate] / 1000,
+			time: time,
 		});
 	},
 };
