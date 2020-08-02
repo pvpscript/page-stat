@@ -59,7 +59,7 @@ chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 	chrome.windows.getLastFocused(null, (win) => currentWindowId = win.id);
 });
 
-const configCache = {
+let configCache = {
 	protocols: ["http", "https", "file", "ftp"], // Valid protocols
 	inactive: [], // Inactive hosts
 	log: true, // Show log messages
