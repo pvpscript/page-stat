@@ -1,0 +1,161 @@
+body {
+  font-family: "Bookman Old Style", sans-serif;
+  background: #433D3D;
+  color: #FFFFFF;
+}
+
+h1 {
+  text-decoration: overline;
+}
+
+h3 {
+  display: table-cell;
+  /*color: #F27927;*/
+  color: #fff;
+  background-color: #000;
+}
+
+h3 + p {
+  color: #D2D7D3;
+}
+
+li.thick {
+  font-weight: bold;
+}
+
+p {
+  padding: 0px 0px 0px 10px;
+}
+
+fieldset {
+  width: 50%;
+  margin: 0px 0px 30px;
+}
+
+fieldset > legend {
+  color: #FF6347;
+}
+
+div.elements {
+  font-size: 80%;
+}
+
+div.sub-elements {
+  position: inline-block;
+  padding: 5px 0px 0px 15px;
+}
+
+.closer-paragraphs > p {
+  margin: 5px;
+}
+
+.question {
+  color: #F1A9A0;
+}
+
+a {
+  color: inherit;
+}
+
+.suffix::before {
+  content: "Suffix: ";
+  color: inherit;
+}
+
+.suffix {
+  font-size: 70%;
+  color: #C8F7C5;
+  margin: 10px;
+}
+
+figure {
+  text-align: center;
+}
+
+ol {
+  list-style: none;
+  counter-reset: li;
+}
+
+li::before {
+  content: counter(li)".";
+  color: #F64747;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+li {
+  counter-increment: li;
+}
+
+ol > li::before {
+  content: counter(li)".";
+}
+
+ol[type="a"] > li::before {
+  content: counter(li, lower-alpha)".";
+}
+
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+li + p {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.sidebar {
+  position: fixed;
+  height: 100%;
+  width: 160px;
+  background-color: #181616;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  border-right: 1px solid white;
+}
+
+.sidebar a {
+  display: block;
+  text-decoration: none;
+  color: #897E7E;
+  padding: 6px 8px 6px 16px;
+  font-size: 20px;
+  border: 1px solid white;
+  border-right: none;
+  border-left: 1px solid white;
+  transition: border-left 0.3s;
+}
+
+.sidebar a:not(:last-child) {
+  border-bottom: none;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+  border-left: 10px solid white;
+  border-left-color: #FFFFFF;
+}
+
+.main {
+  margin-left: 160px;
+  font-size: 25px;
+  padding: 0 10px;
+}
+
+.main a {
+  color: #7FFFD4;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content:target {
+    display: block;
+}
