@@ -19,7 +19,7 @@ async function updatePageAndFocusTime(host) {
 	await updatePageTime(host);
 	host.focusedAt = Date.now();
 
-	chrome.storage.sync.set({pages: pagesCache});
+	chrome.storage.local.set({pages: pagesCache});
 }
 
 function today(utc) {

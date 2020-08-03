@@ -52,7 +52,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
-	chrome.storage.sync.set({
+	chrome.storage.local.set({
 		pages: {}, /* Pages dictionary, with time already computed. */
 	});
 

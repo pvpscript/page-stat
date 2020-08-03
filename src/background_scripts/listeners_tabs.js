@@ -2,7 +2,7 @@ let pagesCache = {}; /* Stored pages cache */
 let onUpdatedUrl = null;
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
-	chrome.storage.sync.get(['pages'], (res) => {
+	chrome.storage.local.get(['pages'], (res) => {
 		pagesCache = res.pages;
 
 		chrome.tabs.get(activeInfo.tabId, async (tab) => {
@@ -27,7 +27,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
 			console.log("-----------------------------------------------");
 			*/
-			chrome.storage.sync.set({pages: pagesCache});
+			chrome.storage.local.set({pages: pagesCache});
 			/*
 			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
 			*/
@@ -42,7 +42,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 	if (changeInfo.status == "complete" && onUpdatedUrl) {
 		onUpdatedUrl = null;
 
-		chrome.storage.sync.get(['pages'], async (res) => {
+		chrome.storage.local.get(['pages'], async (res) => {
 			pagesCache = res.pages;
 
 			/*
@@ -64,7 +64,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
 			console.log("-----------------------------------------------");
 			*/
-			chrome.storage.sync.set({pages: pagesCache});
+			chrome.storage.local.set({pages: pagesCache});
 			/*
 			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
 			*/
