@@ -6,6 +6,7 @@
 	"permissions": [
 		"tabs",
 		"storage",
+		"unlimitedStorage",
 		"declarativeContent",
 		"alarms",
 		"https://www.google.com/"
