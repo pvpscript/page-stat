@@ -17,7 +17,7 @@
       </div>
       <div id="settings" class="tab-content">
         <h1>Settings</h1>
-	<p>Extension settings</p>
+	<p>Extension settings regarding protocol matching, hosts and runtime logging.</p>
 	<fieldset>
 	  <legend>Protocols</legend>
 	  <div class="elements">
@@ -25,14 +25,78 @@
 	    <label for="match">Match only these protocols</label>
             <input type="radio" name="prot-exclusion" id="exclude">
 	    <label for="exclude">Match every protocol, except these</label>
-	    <input type="text" style="margin-top: 20px; width: 100%" name="protocols" placeholder="protocols" pattern="[a-zA-Z]*(,[a-zA-Z]+)*" title="Comma separated values" id="protocols">
+	    <div class="input-group">
+	      <input type="text" name="protocols" placeholder="protocols" pattern="[a-zA-Z]*(,[a-zA-Z]+)*" title="Comma separated values" id="protocols">
+	      <button>Apply</button>
+	    </div>
 	  </div>
 	</fieldset>
-	<h3>Inactive hosts</h3>
-	<div class="elements">
-	  <input type="checkbox" name="log" id="log">
-	  <label for="log">Enable event logs</label>
-	</div>
+	<fieldset>
+	  <legend>Hosts</legend>
+	  <div class="frame">
+	    <table>
+	      <tr>
+	        <th>HOST</th>
+	        <th>ACTIVE</th>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>Lorem ipsum dolor sit amet</td>
+	        <td class="center">
+	          <input type="checkbox" name="hostname">
+	        </td>
+	      </tr>
+	    </table>
+	  </div>
+	</fieldset>
+	<fieldset>
+	  <legend>Logging</legend>
+	  <div class="elements">
+	    <input type="checkbox" name="log" id="log">
+	    <label for="log">Enable event logs</label>
+	  </div>
+	</fieldset>
       </div>
       <div id="storage" class="tab-content">
         <h1>Storage</h1>

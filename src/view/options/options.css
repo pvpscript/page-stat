@@ -159,3 +159,48 @@ li + p {
 .tab-content:target {
     display: block;
 }
+
+.input-group {
+  display: table;
+  padding-top: 20px;
+  width: 100%;
+  font-size: 20px;
+}
+
+.input-group > * {
+  line-height: 20px;
+  text-align: bottom;
+  height: auto;
+  border: 0;
+  outline: none;
+}
+
+.input-group > input[type="text"] {
+  width: 85%;
+}
+
+.input-group > button {
+ width: 10%;
+}
+
+.frame {
+  height: 300px;
+  width: 100%;
+  overflow-y: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+td.center {
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 5px;
+}

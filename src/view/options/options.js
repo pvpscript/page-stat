@@ -1,1 +1,1 @@
-window.location.hash = "#how-to-use";
+window.location.hash = "#settings";
