@@ -18,6 +18,21 @@
       <div id="settings" class="tab-content">
         <h1>Settings</h1>
 	<p>Extension settings</p>
+	<fieldset>
+	  <legend>Protocols</legend>
+	  <div class="elements">
+            <input type="radio" name="prot-exclusion" id="match">
+	    <label for="match">Match only these protocols</label>
+            <input type="radio" name="prot-exclusion" id="exclude">
+	    <label for="exclude">Match every protocol, except these</label>
+	    <input type="text" style="margin-top: 20px; width: 100%" name="protocols" placeholder="protocols" pattern="[a-zA-Z]*(,[a-zA-Z]+)*" title="Comma separated values" id="protocols">
+	  </div>
+	</fieldset>
+	<h3>Inactive hosts</h3>
+	<div class="elements">
+	  <input type="checkbox" name="log" id="log">
+	  <label for="log">Enable event logs</label>
+	</div>
       </div>
       <div id="storage" class="tab-content">
         <h1>Storage</h1>
