@@ -10,9 +10,9 @@ h1 {
 
 h3 {
   display: table-cell;
-  /*color: #F27927;*/
-  color: #fff;
-  background-color: #000;
+  color: #F27927;
+  /*color: #fff;*/
+  /*background-color: #000;*/
 }
 
 h3 + p {
