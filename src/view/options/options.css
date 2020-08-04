@@ -199,6 +199,10 @@ table {
   border-collapse: collapse;
 }
 
+td {
+  color: #C8F7C5;
+}
+
 td, th {
   border: 1px solid black;
   text-align: left;
