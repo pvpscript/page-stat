@@ -209,3 +209,14 @@ td, th {
   text-align: left;
   padding: 5px;
 }
+
+.error {
+  color: red;
+  display: inline;
+  font-size: 18px;
+  visibility: hidden;
+}
+
+.error::before {
+  content: "Error: ";
+}
