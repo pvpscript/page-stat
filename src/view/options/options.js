@@ -1,4 +1,4 @@
-window.location.hash = "#settings";
+window.location.hash = "#storage";
 
 // Populate inputs
 chrome.storage.sync.get(['config'], (res) => {
@@ -54,3 +54,50 @@ settings.addEventListener("change", (e) => {
 	const action = methods[e.target.name];
 	action(e.target);
 });
+
+// Set storage structure
+const code = document.getElementById("storage-structure");
+const objStructure = {
+	host: {
+		favicon: "base64 favicon data",
+		time: {
+			date: "usage time",
+		}
+	},
+};
+const structure = document.createTextNode(
+	JSON.stringify(objStructure, null, 4));
+code.appendChild(structure);
+
+// Show current storage usage
+const usageNode = document.getElementById("curr-usage");
+chrome.storage.local.getBytesInUse((res) => 
+	usageNode.innerText = res + "B"
+);
+
+// Save storage data
+const getData = {
+	pagesStorage: (anchor) => {
+		chrome.storage.local.get(['pages'], (res) => {
+			const data = new Blob(
+				[JSON.stringify(res.pages, null, '\t')],
+				{type: "application/json"}
+			);
+			anchor.download = "pagesStorage.json";
+			anchor.href = URL.createObjectURL(data);
+		});
+	},
+	settingsStorage: (anchor) => {
+		chrome.storage.sync.get(['config'], (res) => {
+			const data = new Blob(
+				[JSON.stringify(res.config, null, '\t')],
+				{type: "application/json"}
+			);
+			anchor.download = "settingsStorage.json";
+			anchor.href = URL.createObjectURL(data);
+		});
+	}
+}
+
+const downloaders = document.getElementsByName("download");
+downloaders.forEach((a) => getData[a.id](a));

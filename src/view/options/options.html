@@ -55,13 +55,19 @@
         <h1>Storage</h1>
 	<p>Info regarding the storage</p>
 	<h3>Why unlimited?</h3>
-	<p>Why?</p>
-	<h3>Current storage</h3>
-	<p>Current value in bytes</p>
+	<p>It was decided to use unlimited storage for the simple reason that the default maximum storage value is way too prohibitive, speaking for long term usage of this extension. If this is used long enough and lots of sites as accessed daily, it can take over 8MB of data (see estimation below).</p>
 	<h3>Estimation</h3>
-	<p>Storage estimation</p>
+	<p>To understand the estimation, let's consider the extension's storage structure, as seen below:</p>
+	<div class="code" id="storage-structure"></div>
+	<p>It's also important to consider that this is the structure for a single host and a single date. The real world usage would have several hosts and several dates for each host.</p>
+	<p>With that in mind, an estimation was taken considering the current google favicon as base64, for a usage gap of 10 years with 1000 hosts, each one having a whole day usage every single day, and it yielded a usage of 84926001B, which roughly translates to 84.9MB.</p>
+	<p>This is a very large number, but keep in mind that it's the 'worst case scenario' for a very long usage span.</p>
+	<p>The code used for this estimation can be found <a href="https://gist.github.com/pvpscript/37c5999a1d32927f25630f2fc907ebb0">here</a>.</p>
+	<h3>Current storage</h3>
+	<p>The current local storage value in bytes is: <span class="usage" id="curr-usage"></span></p>
 	<h3>Export data</h3>
-	<p>Export local storage data</p>
+	<p>Pages storage data (local): <a name="download" id="pagesStorage">export</a>.</p>
+	<p>Settings storage data (sync): <a name="download" id="settingsStorage">export</a>.</p>
       </div>
       <div id="feedback" class="tab-content">
         <h1>Feedback</h1>

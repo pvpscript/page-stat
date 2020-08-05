@@ -10,13 +10,10 @@ h1 {
 
 h3 {
   display: table-cell;
-  color: #F27927;
+  color: #BAF73C;
+  /*color: #F27927;*/
   /*color: #fff;*/
   /*background-color: #000;*/
-}
-
-h3 + p {
-  color: #D2D7D3;
 }
 
 li.thick {
@@ -33,7 +30,7 @@ fieldset {
 }
 
 fieldset > legend {
-  color: #FF6347;
+  color: #BAF73C;
 }
 
 div.elements {
@@ -219,4 +216,20 @@ td, th {
 
 .error::before {
   content: "Error: ";
+}
+
+.code {
+  font-family: "Lucida", monospace;
+  font-size: 20px;
+  width: 50%;
+  overflow: auto;
+  margin:  20px;
+  border: 1px solid black;
+  background: #242729;
+  border-radius: 5px;
+  white-space: pre-wrap;
+}
+
+.usage {
+  color: #FF6347;
 }
