@@ -2,6 +2,7 @@ const methods = {
 	hostStatus: (payload) => changeHostStatus(payload),
 	pMatching: (payload) => changeProtocolMatching(payload),
 	log: (payload) => changeLogging(payload),
+	protocols: (payload) => updateProtocolList(payload),
 };
 
 function changeHostStatus(payload) {
@@ -47,6 +48,26 @@ function changeLogging(payload) {
 			data: {config: res.config}
 		});
 	});
+}
+
+function updateProtocolList(payload) {
+	const error = document.getElementById("protocol-error");
+
+	if (payload.checkValidity()) {
+		error.style.visibility = "hidden";
+
+		chrome.storage.sync.get(['config'], (res) => {
+			res.config.protocols = payload.value.split(",");
+
+			chrome.storage.sync.set({config: res.config});
+			chrome.runtime.sendMessage({
+				type: "updateConfigCache",
+				data: {config: res.config}
+			});
+		});
+	} else {
+		error.style.visibility = "visible";
+	}
 }
 
 export { methods };
