@@ -19,8 +19,6 @@ chrome.storage.sync.get(['config'], (res) => {
 			...config.inactive
 		].sort();
 
-		console.log(hosts);
-
 		const table = document.getElementById("host-table");
 		const checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
@@ -41,8 +39,8 @@ chrome.storage.sync.get(['config'], (res) => {
 		}
 	});
 	
-	const log = document.getElementById("log");
-	log.checked = config.log;
+	const logNode = document.getElementById("log");
+	logNode.checked = config.log;
 });
 
 // Listen for changes
