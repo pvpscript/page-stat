@@ -2,7 +2,11 @@ function buildURL(url) {
 	try {
 		const urlObj = new URL(url);
 		const protocol = urlObj.protocol.split(":")[0];
-		const stat = configCache.protocols.includes(protocol) &&
+		const protocolMatching = configCache.pMatching
+			? configCache.protocols.includes(protocol)
+			: !configCache.protocols.includes(protocol);
+
+		const stat = protocolMatching &&
 			!configCache.inactive.includes(urlObj.host);
 
 		return {
