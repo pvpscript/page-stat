@@ -17,7 +17,7 @@ chrome.storage.sync.get(['config'], (res) => {
 		const hosts = [
 			...pages,
 			...config.inactive
-		].sort();
+		].filter((v, i, self) => self.indexOf(v) === i).sort();
 
 		const table = document.getElementById("host-table");
 		const checkbox = document.createElement("input");
@@ -43,8 +43,14 @@ chrome.storage.sync.get(['config'], (res) => {
 	logNode.checked = config.log;
 });
 
+import { methods } from "./settings.js";
+
 // Listen for changes
 const settings = document.getElementById("settings");
 settings.addEventListener("change", (e) => {
 	console.log(`${e.target.name}: ${e.target.id}`);
+	console.log(e.target);
+
+	const action = methods[e.target.name];
+	action(e.target);
 });

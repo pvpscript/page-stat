@@ -35,6 +35,12 @@ const methods = {
 			time: time,
 		});
 	},
+	updateConfigCache: (tab, data, response) => {
+		configCache = data.config;
+	},
+	updatePagesCache: (tab, data, response) => {
+		pagesCache = data.pages;
+	},
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
