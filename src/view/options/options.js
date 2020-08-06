@@ -101,3 +101,65 @@ const getData = {
 
 const downloaders = document.getElementsByName("download");
 downloaders.forEach((a) => getData[a.id](a));
+
+// Import data
+
+import { validateImport } from "./validator.js";
+
+const storeImport = {
+	pagesImport: (data) => {
+		chrome.storage.local.set({pages: data});
+
+		chrome.runtime.sendMessage({
+			type: "updatePagesCache",
+			data: {pages: data}
+		});
+	},
+	settingsImport: (data) => {
+		chrome.storage.sync.set({config: data});
+
+		chrome.runtime.sendMessage({
+			type: "updateConfigCache",
+			data: {config: data}
+		});
+	}
+};
+const importTable = document.getElementById("import-table");
+importTable.addEventListener("change", (e) => {
+	const element = e.target;
+	const reader = new FileReader();
+
+	const errorNode = document.getElementById("import-error");
+	const successNode = document.getElementById("import-success");
+
+	reader.onload = () => {
+		errorNode.style.visibility = "hidden";
+		errorNode.textContent = "";
+		successNode.style.visibility = "hidden";
+		successNode.textContent = "";
+	}
+
+	reader.onloadend = () => {
+		const json = JSON.parse(reader.result);
+		const action = validateImport[element.id];
+
+		action(json, (stat, msg) => {
+			if (stat) {
+				storeImport[element.id](json);
+
+				successNode.textContent = msg +
+					" [Data applied successfully]";
+				successNode.style.visibility = "visible";
+			} else {
+				errorNode.textContent = 
+					"Invalid JSON. [" + msg + "]";
+
+				errorNode.style.visibility = "visible";
+			}
+		});
+	}
+
+	if (element.files && element.files.length > 0) {
+		reader.readAsText(element.files[0]);
+	}
+});

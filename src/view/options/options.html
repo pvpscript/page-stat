@@ -71,7 +71,7 @@
 	<p style="margin-top: 5px;">Settings storage data (sync): <a name="download" id="settingsStorage">export</a>.</p>
 	<h3>Import data</h3>
 	<p>Select a storage type to import.</p>
-	<div style="display: table; width: 100%;">
+	<div style="display: table; width: 100%;" id="import-table">
 	  <div style="display: table-row">
 	    <label for="pagesImport" style="display: table-cell; width: 10%;">Pages:</label>
 	    <input type="file" style="display: table-cell; width: 100%;" accept="application/json" id="pagesImport">
@@ -80,6 +80,10 @@
 	    <label style="display: table-cell; width: 10%;" for="settingsImport">Settings:</label>
 	    <input style="display: table-cell; width: 100%;" type="file" accept="application/json" id="settingsImport">
 	  </div>
+	</div>
+	<div class="result-group">
+          <span class="error" id="import-error"></span>
+	  <span class="success" id="import-success"></span>
 	</div>
       </div>
       <div id="feedback" class="tab-content">

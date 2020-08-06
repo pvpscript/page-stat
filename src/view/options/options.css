@@ -207,6 +207,22 @@ td, th {
   padding: 5px;
 }
 
+.result-group > span {
+  position: absolute;
+  padding-top: 5px;
+}
+
+.success {
+  color: #00FFFF;
+  display: inline;
+  font-size: 18px;
+  visibility: hidden;
+}
+
+.success::before {
+  content: "Success: ";
+}
+
 .error {
   color: red;
   display: inline;
