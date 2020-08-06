@@ -42,7 +42,7 @@ function validateHosts(obj, callback) {
                 `Host must be an object, got ${typeof obj[i]}.`);
         }
     }
-    return callback(true, "JSON is valid");
+    return callback(true, "hosts JSON is valid!");
 }
 
 // More uglyness
@@ -71,7 +71,7 @@ function validateSettings(obj, callback) {
 		}
 	}
 
-	return callback(true, "Valid config JSON");
+	return callback(true, "config JSON is valid!");
 }
 
 const validateImport = {
