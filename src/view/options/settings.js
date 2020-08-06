@@ -40,7 +40,7 @@ function changeProtocolMatching(payload) {
 
 function changeLogging(payload) {
 	chrome.storage.sync.get(['config'], (res) => {
-		res.config.log = !payload.checked;
+		res.config.log = payload.checked;
 
 		chrome.storage.sync.set({config: res.config});
 		chrome.runtime.sendMessage({
