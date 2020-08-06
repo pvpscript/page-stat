@@ -249,3 +249,8 @@ td, th {
 .usage {
   color: #FF6347;
 }
+
+.danger {
+  color: #FF6347;
+  text-decoration: underline;
+}
