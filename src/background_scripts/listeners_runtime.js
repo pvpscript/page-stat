@@ -1,10 +1,9 @@
-async function updateStorage(url, validator, response, updateCache) {
+async function updateStorage(url, validator, response, update) {
 	const result = await fetch(url).then((res) => res.json());
 
 	validator(result, (stat, msg) => {
 		if (stat) {
-			updateCache(result);
-			// update storage too
+			update(result);
 		}
 
 		response({
