@@ -73,10 +73,3 @@ function validateSettings(obj, callback) {
 
 	return callback(true, "config JSON is valid!");
 }
-
-const validateImport = {
-	pagesImport: (obj, callback) => validateHosts(obj, callback),
-	settingsImport: (obj, callback) => validateSettings(obj, callback),
-};
-
-export { validateImport };

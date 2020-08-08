@@ -6,10 +6,10 @@ chrome.storage.sync.get(['config'], (res) => {
 
 	const protocols = document.getElementById("protocols");
 	const pOpt = document.getElementById(
-		res.config.pMatching ? "include" : "exclude"
+		config.pMatching ? "include" : "exclude"
 	);
 
-	protocols.value = res.config.protocols;
+	protocols.value = config.protocols;
 	pOpt.checked = true;
 
 	chrome.storage.local.get(['pages'], (p) => {
@@ -102,64 +102,35 @@ const getData = {
 const downloaders = document.getElementsByName("download");
 downloaders.forEach((a) => getData[a.id](a));
 
-// Import data
-
-import { validateImport } from "./validator.js";
-
-const storeImport = {
-	pagesImport: (data) => {
-		chrome.storage.local.set({pages: data});
-
-		chrome.runtime.sendMessage({
-			type: "updatePagesCache",
-			data: {pages: data}
-		});
-	},
-	settingsImport: (data) => {
-		chrome.storage.sync.set({config: data});
-
-		chrome.runtime.sendMessage({
-			type: "updateConfigCache",
-			data: {config: data}
-		});
-	}
-};
+// Section: Import data from file
 const importTable = document.getElementById("import-table");
 importTable.addEventListener("change", (e) => {
 	const element = e.target;
-	const reader = new FileReader();
 
 	const errorNode = document.getElementById("import-error");
 	const successNode = document.getElementById("import-success");
 
-	reader.onload = () => {
-		errorNode.style.visibility = "hidden";
-		errorNode.textContent = "";
-		successNode.style.visibility = "hidden";
-		successNode.textContent = "";
-	}
-
-	reader.onloadend = () => {
-		const json = JSON.parse(reader.result);
-		const action = validateImport[element.id];
-
-		action(json, (stat, msg) => {
-			if (stat) {
-				storeImport[element.id](json);
-
-				successNode.textContent = msg +
-					" [Data applied successfully]";
-				successNode.style.visibility = "visible";
-			} else {
-				errorNode.textContent = 
-					"Invalid JSON. [" + msg + "]";
-
-				errorNode.style.visibility = "visible";
-			}
-		});
-	}
+	errorNode.style.visibility = "hidden";
+	errorNode.textContent = "";
+	successNode.style.visibility = "hidden";
+	successNode.textContent = "";
 
 	if (element.files && element.files.length > 0) {
-		reader.readAsText(element.files[0]);
+		chrome.runtime.sendMessage({
+			type: element.id,
+			data: {url: URL.createObjectURL(element.files[0])}
+		}, (res) => {
+			if (res && res.stat) {
+				successNode.textContent = res.msg +
+					" [Data applied successfully]";
+				successNode.style.visibility = "visible";
+			} else if (res && !res.stat) {
+				errorNode.textContent = 
+					"Invalid JSON. [" + res.msg + "]";
+				errorNode.style.visibility = "visible";
+			} else {
+				errorNode.textContent = "Message error";
+			}
+		});
 	}
 });

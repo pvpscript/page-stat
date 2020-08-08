@@ -1,3 +1,19 @@
+async function updateStorage(url, validator, response, updateCache) {
+	const result = await fetch(url).then((res) => res.json());
+
+	validator(result, (stat, msg) => {
+		if (stat) {
+			updateCache(result);
+			// update storage too
+		}
+
+		response({
+			stat: stat,
+			msg: msg
+		});
+	});
+}
+
 const methods = {
 	statusChange: async (tab, data, response) => {
 		const hostStatus = data.hostStatus;
@@ -35,10 +51,32 @@ const methods = {
 			time: time,
 		});
 	},
-	updateConfigCache: (tab, data, response) => {
+	settingsImport: async (tab, data, response) => {
+		await updateStorage(
+			data.url,
+			validateSettings,
+			response,
+			(res) => {
+				configCache = res;
+				chrome.storage.sync.set({config: res});
+			}
+		);
+	},
+	pagesImport: async (tab, data, response) => {
+		await updateStorage(
+			data.url,
+			validateHosts,
+			response,
+			(res) => {
+				pagesCache = res;
+				chrome.storage.local.set({pages: res});
+			}
+		);
+	},
+	updateConfigCache: async (tab, data, response) => {
 		configCache = data.config;
 	},
-	updatePagesCache: (tab, data, response) => {
+	updatePagesCache: async (tab, data, response) => {
 		pagesCache = data.pages;
 	},
 };
