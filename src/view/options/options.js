@@ -103,6 +103,8 @@ const downloaders = document.getElementsByName("download");
 downloaders.forEach((a) => getData[a.id](a));
 
 // Section: Import data from file
+import { updateOptionsSettings } from "./updater.js";
+
 const importTable = document.getElementById("import-table");
 importTable.addEventListener("change", (e) => {
 	const element = e.target;
@@ -124,6 +126,11 @@ importTable.addEventListener("change", (e) => {
 				successNode.textContent = res.msg +
 					" [Data applied successfully]";
 				successNode.style.visibility = "visible";
+
+				updateOptionsSettings[element.id]();
+				chrome.storage.local.getBytesInUse((res) => 
+					usageNode.innerText = res + "B"
+				);
 			} else if (res && !res.stat) {
 				errorNode.textContent = 
 					"Invalid JSON. [" + res.msg + "]";
