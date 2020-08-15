@@ -33,7 +33,7 @@ chrome.storage.local.get(['pages'], (res) => {
 
 		const bar = progressBar(
 			(time / sHostTime[0][1]) * 100,
-			msToHuman(time)
+			timeToHuman(time / 1000)
 		);
 		cell3.appendChild(bar);
 	}
@@ -58,6 +58,16 @@ function progressBar(perc, text) {
 	return bar;
 }
 
-function msToHuman(ms) {
-	return ms;
+function timeToHuman(time) {
+	const days = Math.floor(time / 86400);
+	const hours = Math.floor((time - days * 86400) / 3600);
+	const mins = Math.floor((time - days * 86400 - hours * 3600) / 60);
+	const secs = Math.floor(
+		time - days * 86400 - hours * 3600 - mins * 60
+	);
+
+	return days + (days == 1 ? " day, " : " days, ") +
+		("0"+hours).slice(-2) +
+		":" + ("0"+mins).slice(-2) +
+		":" + ("0"+secs).slice(-2);
 }
