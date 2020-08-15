@@ -31,15 +31,32 @@ chrome.storage.local.get(['pages'], (res) => {
 		cell2.appendChild(document.createTextNode(h));
 		cell3 = row.insertCell();
 
-		 //sHostTime[0][1]-> 1
-		//time -> x
-		const bar = document.createElement("progress");
-		bar.max = "100";
-		bar.value = (time / sHostTime[0][1]) * 100;
-		bar.title = msToHuman(time);
+		const bar = progressBar(
+			(time / sHostTime[0][1]) * 100,
+			msToHuman(time)
+		);
 		cell3.appendChild(bar);
 	}
 });
+
+function progressBar(perc, text) {
+	const bar = document.createElement("div");
+	const valNode = document.createElement("span");
+	const textNode = document.createElement("span");
+
+	bar.classList.value = "progress";
+
+	valNode.classList.value = "value";
+	valNode.style.width = perc + "%";
+
+	textNode.classList.value = "text";
+	textNode.appendChild(document.createTextNode(text));
+
+	bar.appendChild(valNode);
+	bar.appendChild(textNode);
+
+	return bar;
+}
 
 function msToHuman(ms) {
 	return ms;

@@ -1,10 +1,23 @@
-progress[value] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+.progress {
+  width: 250px;
+  height: 20px;
   border: 1px solid #aaa;
+  background-color: #eee;
+  position: relative;
 }
 
-progress[value]::-webkit-progress-bar {
-  background-color: #eee;
+.progress > .value {
+  display: block;
+  height: 100%;
+  color: black;
+  background-color: green;
+}
+
+.progress > .text {
+  font-size: 16px;
+  position: absolute;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
