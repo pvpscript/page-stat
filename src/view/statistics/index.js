@@ -16,17 +16,31 @@ chrome.storage.local.get(['pages'], (res) => {
 	console.log(hostTime);
 
 	let index = 1;
-	hostTime.sort((a, b) => { return b[1] - a[1]; }).forEach((e) => {
-	  const h = e[0];
-	  const time = e[1];
-
-	  row = sites.insertRow();
-	  cell = row.insertCell();
-	  cell.appendChild(document.createTextNode(index++));
-	  cell2 = row.insertCell();
-	  cell2.appendChild(document.createTextNode(h));
-	  cell3 = row.insertCell();
-
-	  cell3.appendChild(document.createTextNode(time));
+	let sHostTime = hostTime.sort((a, b) => {
+		return b[1] - a[1];
 	});
+
+	for (let e of sHostTime) {
+		const h = e[0];
+		const time = e[1];
+
+		row = sites.insertRow();
+		cell = row.insertCell();
+		cell.appendChild(document.createTextNode(index++));
+		cell2 = row.insertCell();
+		cell2.appendChild(document.createTextNode(h));
+		cell3 = row.insertCell();
+
+		 //sHostTime[0][1]-> 1
+		//time -> x
+		const bar = document.createElement("progress");
+		bar.max = "100";
+		bar.value = (time / sHostTime[0][1]) * 100;
+		bar.title = msToHuman(time);
+		cell3.appendChild(bar);
+	}
 });
+
+function msToHuman(ms) {
+	return ms;
+}
