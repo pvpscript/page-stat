@@ -1,3 +1,7 @@
+body {
+  background: #433D3D;
+}
+
 .progress {
   width: 250px;
   height: 20px;
@@ -20,4 +24,33 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.sites-container {
+  position: relative;
+  text-align: center;
+}
+
+.sites-table {
+  display: inline-table;
+  border-collapse: collapse;
+  color: #E1EDF9;
+}
+
+.sites-table th {
+  background: #C5EFF7;
+  color: #2C3E50;
+}
+
+.sites-table td, .sites-table th {
+  padding: 8px 5px 8px 8px;
+  border: 1px solid #E4F1FE;
+}
+
+.sites-table a {
+  color: #82D6C8;
+}
+
+.sites-table .text {
+  color: #000;
 }
