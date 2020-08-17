@@ -28,7 +28,7 @@ chrome.storage.local.get(['pages'], (res) => {
 		cell = row.insertCell();
 		cell.appendChild(document.createTextNode(index++));
 		cell2 = row.insertCell();
-		cell2.appendChild(document.createTextNode(h));
+		cell2.appendChild(anchor(h, h));
 		cell3 = row.insertCell();
 
 		const bar = progressBar(
@@ -38,6 +38,15 @@ chrome.storage.local.get(['pages'], (res) => {
 		cell3.appendChild(bar);
 	}
 });
+
+function anchor(link, text) {
+	const a = document.createElement("a");
+	a.target = "_blank";
+	a.href = "http://" + link;
+	a.appendChild(document.createTextNode(text));
+
+	return a;
+}
 
 function progressBar(perc, text) {
 	const bar = document.createElement("div");
