@@ -54,3 +54,12 @@ body {
 .sites-table .text {
   color: #000;
 }
+
+.trash-container {
+  text-align: center;
+}
+
+.svg-trash {
+  width: 24px;
+  height: 24px;
+}

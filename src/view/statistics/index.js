@@ -4,13 +4,13 @@ chrome.storage.local.get(['pages'], (res) => {
 	const pages = res.pages;
 	const hostTime = [];
 
-	for (let h in pages) {
+	for (let host in pages) {
 		let totalTime = 0;
-		for (let t in pages[h].time) {
-			totalTime += pages[h].time[t];
+		for (let t in pages[host].time) {
+			totalTime += pages[host].time[t];
 		}
 		
-		hostTime.push([h, totalTime]);
+		hostTime.push([host, totalTime]);
 	}
 
 	console.log(hostTime);
@@ -21,14 +21,14 @@ chrome.storage.local.get(['pages'], (res) => {
 	});
 
 	for (let e of sHostTime) {
-		const h = e[0];
+		const host = e[0];
 		const time = e[1];
 
 		row = sites.insertRow();
 		cell = row.insertCell();
 		cell.appendChild(document.createTextNode(index++));
 		cell2 = row.insertCell();
-		cell2.appendChild(anchor(h, h));
+		cell2.appendChild(anchor(host, host));
 		cell3 = row.insertCell();
 
 		const bar = progressBar(
@@ -36,8 +36,29 @@ chrome.storage.local.get(['pages'], (res) => {
 			timeToHuman(time / 1000)
 		);
 		cell3.appendChild(bar);
+
+		cell4 = row.insertCell();
+		cell4.classList.add("trash-container");
+		cell4.appendChild(svgReference("trash", host, stuff));
 	}
 });
+
+function stuff(e) {
+	console.log(this.id);
+
+	// remove site from cache and local storage
+	chrome.storage.local.get(['pages'], (res) => {
+		delete res.pages[this.id];
+
+		chrome.storage.local.set({pages: res.pages});
+		chrome.runtime.sendMessage({
+			type: "updatePagesCache",
+			data: {pages: res.pages}
+		});
+	});
+
+	window.location.reload();
+}
 
 function anchor(link, text) {
 	const a = document.createElement("a");
@@ -65,6 +86,39 @@ function progressBar(perc, text) {
 	bar.appendChild(textNode);
 
 	return bar;
+}
+
+function svgReference(refId, elementId, evt) {
+	const button = document.createElement("button");
+	button.name = "nomerento";
+	button.id = elementId;
+	button.addEventListener("click", evt);
+	const svg = document.createElementNS(
+		"http://www.w3.org/2000/svg",
+		"svg"
+	);
+	svg.setAttributeNS(
+		"http://www.w3.org/2000/xmlns/",
+		"xmlns:xlink",
+		"http://www.w3.org/1999/xlink"
+	);
+	svg.classList.add("svg-trash");
+	svg.id = elementId;
+
+	const use = document.createElementNS(
+		"http://www.w3.org/2000/svg",
+		"use"
+	);
+	use.setAttributeNS(
+		"http://www.w3.org/1999/xlink",
+		"xlink:href",
+		"#" + refId
+	);
+
+	svg.appendChild(use);
+	button.appendChild(svg);
+
+	return button;
 }
 
 function timeToHuman(time) {
