@@ -13,10 +13,8 @@ chrome.storage.local.get(['pages'], (res) => {
 		hostTime.push([host, totalTime]);
 	}
 
-	console.log(hostTime);
-
 	let index = 1;
-	let sHostTime = hostTime.sort((a, b) => {
+	const sHostTime = hostTime.sort((a, b) => {
 		return b[1] - a[1];
 	});
 
@@ -25,11 +23,11 @@ chrome.storage.local.get(['pages'], (res) => {
 		const time = e[1];
 
 		row = sites.insertRow();
-		cell = row.insertCell();
+		const cell = row.insertCell();
 		cell.appendChild(document.createTextNode(index++));
-		cell2 = row.insertCell();
+		const cell2 = row.insertCell();
 		cell2.appendChild(anchor(host, host));
-		cell3 = row.insertCell();
+		const cell3 = row.insertCell();
 
 		const bar = progressBar(
 			(time / sHostTime[0][1]) * 100,
@@ -37,16 +35,15 @@ chrome.storage.local.get(['pages'], (res) => {
 		);
 		cell3.appendChild(bar);
 
-		cell4 = row.insertCell();
+		const cell4 = row.insertCell();
 		cell4.classList.add("trash-container");
-		cell4.appendChild(svgReference("trash", host, stuff));
+		cell4.appendChild(
+			svgReference("trash", host, deleteHost)
+		);
 	}
 });
 
-function stuff(e) {
-	console.log(this.id);
-
-	// remove site from cache and local storage
+function deleteHost(e) {
 	chrome.storage.local.get(['pages'], (res) => {
 		delete res.pages[this.id];
 
@@ -90,9 +87,9 @@ function progressBar(perc, text) {
 
 function svgReference(refId, elementId, evt) {
 	const button = document.createElement("button");
-	button.name = "nomerento";
 	button.id = elementId;
 	button.addEventListener("click", evt);
+
 	const svg = document.createElementNS(
 		"http://www.w3.org/2000/svg",
 		"svg"
