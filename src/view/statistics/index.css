@@ -34,11 +34,11 @@ body {
 .sites-table {
   display: inline-table;
   border-collapse: collapse;
-  color: #E1EDF9;
+  color: #FFF;
 }
 
 .sites-table th {
-  background: #C5EFF7;
+  background: #E4F1FE;
   color: #2C3E50;
 }
 
