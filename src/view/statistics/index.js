@@ -43,6 +43,17 @@ chrome.storage.local.get(['pages'], (res) => {
 	}
 });
 
+const usage = document.getElementById("usage");
+const custom = document.getElementById("custom");
+
+usage.addEventListener("change", (e) => {
+	if (e.target.value === "custom") {
+		custom.style.visibility = "visible";
+	} else {
+		custom.style.visibility = "hidden";
+	}
+});
+
 function deleteHost(e) {
 	chrome.storage.local.get(['pages'], (res) => {
 		delete res.pages[this.id];

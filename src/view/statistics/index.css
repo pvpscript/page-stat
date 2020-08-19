@@ -27,8 +27,11 @@ body {
 }
 
 .sites-container {
+  right: 0%;
   position: relative;
   text-align: center;
+  opacity: 1;
+  display: none;
 }
 
 .sites-table {
@@ -62,4 +65,49 @@ body {
 .svg-trash {
   width: 24px;
   height: 24px;
+}
+
+.scroll-left {
+  right: 100%;
+  opacity: 0.1;
+  transition: right 2s, opacity 1s;
+}
+
+.scroll-back {
+  right: 0;
+  opacity: 1;
+  transition: right 2s, opacity 1s;
+}
+
+.scroll-right {
+  left: 100%;
+  opacity: 0.1;
+  transition: right 2s, opacity 1s;
+}
+
+.host-stats {
+  position: relative;
+  display: none;
+}
+
+.custom {
+  display: block;
+  visibility: hidden;
+  margin: 10px;
+}
+
+.custom:last-child {
+  color: red;
+}
+
+.graphic {
+  border: 1px solid black;
+}
+
+.extras {
+  padding-top: 20px;
+}
+
+.highlight-date {
+  color: red;
 }
