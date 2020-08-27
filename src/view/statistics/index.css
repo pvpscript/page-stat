@@ -91,9 +91,11 @@ body {
 }
 
 .host-stats {
-  height: 100%;
-  position: relative;
+  top: 50%; 
+  left: 50%; 
+  position: fixed;
   display: inline-block;
+  transform: translate(-50%, -50%);
 }
 
 .custom {
@@ -138,3 +140,9 @@ body {
   opacity: 0.1;
   transition: right 2s, opacity 1s;
 }
+
+.statistics {
+  width: 100%;
+  overflow: hidden;
+}
+
