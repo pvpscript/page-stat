@@ -44,6 +44,20 @@ chrome.storage.local.get(['pages'], (res) => {
 });
 
 const hostStats = document.getElementById("host-stats");
+const closeHsModal = document.getElementById("close-hs-modal");
+
+window.addEventListener("click", (e) => {
+	const node = e.target;
+
+	if (node === hostStats) {
+		hostStats.style.display = "none";
+	}
+});
+
+closeHsModal.addEventListener("click", (e) => {
+	hostStats.style.display = "none";
+});
+
 const usage = document.getElementById("usage");
 const custom = document.getElementById("custom");
 
