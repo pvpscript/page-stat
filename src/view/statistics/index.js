@@ -26,7 +26,7 @@ chrome.storage.local.get(['pages'], (res) => {
 		const cell = row.insertCell();
 		cell.appendChild(document.createTextNode(index++));
 		const cell2 = row.insertCell();
-		cell2.appendChild(anchor(host, host));
+		cell2.appendChild(anchor(host, host, updateModal));
 		const cell3 = row.insertCell();
 
 		const bar = progressBar(
@@ -83,10 +83,65 @@ function deleteHost(e) {
 	window.location.reload();
 }
 
-function anchor(link, text) {
+function updateModal(e) {
+	e.preventDefault();
+
+	const node = e.target;
+	console.log(node.name);
+	
+	chrome.storage.local.get(['pages'], (res) => {
+		const page = res.pages[node.name];
+		const siteStat = document.getElementById("site-stat");
+		const startDate = document.getElementById("start-date");
+		const endDate = document.getElementById("end-date");
+		
+		siteStat.textContent = node.name;
+		while(startDate.lastChild) {
+			startDate.removeChild(startDate.lastChild);
+			endDate.removeChild(endDate.lastChild);
+		}
+		for (let d in page.time) {
+			startDate.appendChild(
+				option(d, formatDashedDateString(d))
+			);
+			endDate.appendChild(
+				option(d, formatDashedDateString(d))
+			);
+		}
+	});
+
+	hostStats.style.display = "block";
+}
+
+function option(value, text) {
+	const opt = document.createElement("option");
+
+	opt.value = value;
+	opt.appendChild(document.createTextNode(text));
+
+	return opt;
+}
+
+function formatDashedDateString(date) {
+	const fields = date.split("-");
+
+	return ("0"+fields[2]).slice(-2) + "/" +
+		("0"+fields[1]).slice(-2) + "/" +
+		("0000"+fields[0]).slice(-4);
+}
+
+function anchor(link, text, evt) {
 	const a = document.createElement("a");
-	a.target = "_blank";
-	a.href = "http://" + link;
+	
+	if (evt) {
+		a.addEventListener("click", evt);
+		a.name = link;
+		a.href = "#";
+	} else {
+		a.target = "_blank";
+		a.href = "http://" + link;
+	}
+
 	a.appendChild(document.createTextNode(text));
 
 	return a;
