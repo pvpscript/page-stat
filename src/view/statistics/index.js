@@ -43,12 +43,13 @@ chrome.storage.local.get(['pages'], (res) => {
 	}
 });
 
+const hostStats = document.getElementById("host-stats");
 const usage = document.getElementById("usage");
 const custom = document.getElementById("custom");
 
 usage.addEventListener("change", (e) => {
 	if (e.target.value === "custom") {
-		custom.style.visibility = "visible";
+		custom.style.visibility = "inherit";
 	} else {
 		custom.style.visibility = "hidden";
 	}

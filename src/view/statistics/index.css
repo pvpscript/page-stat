@@ -1,6 +1,5 @@
 body {
   background: #433D3D;
-  height: 100%;
 }
 
 .intro {
@@ -22,6 +21,11 @@ body {
 
 .averages h3 {
   margin: 5px;
+}
+
+.statistics {
+  width: 100%;
+  height: 100%;
 }
 
 .sites-container {
@@ -96,6 +100,37 @@ body {
   position: fixed;
   display: inline-block;
   transform: translate(-50%, -50%);
+  background: white;
+  opacity: 1;
+}
+
+.top-container {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.left-arrow-container {
+  display: inline-block; 
+}
+
+.left-arrow {
+  width: 24px;
+  height: 16px;
+}
+
+.title {
+  display: inline-block;
+  float: right;
+  margin: 0;
+}
+
+#site-stat {
+  color: red;
+}
+
+.hs-container {
+  border: 1px solid black;
+  padding: 20px;
 }
 
 .custom {
@@ -141,8 +176,11 @@ body {
   transition: right 2s, opacity 1s;
 }
 
-.statistics {
-  width: 100%;
-  overflow: hidden;
+.hide {
+  opacity: 0;
+  visibility: hidden;
 }
 
+.partial-hide {
+  opacity: 0.1;
+}
