@@ -160,8 +160,9 @@ body {
   padding-top: 20px;
 }
 
-.highlight-date {
+.highlight {
   color: red;
+  font-weight: bold;
 }
 
 .scroll-left {
