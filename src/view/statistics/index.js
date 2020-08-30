@@ -69,6 +69,22 @@ usage.addEventListener("change", (e) => {
 	}
 });
 
+const startDate = document.getElementById("start-date");
+startDate.addEventListener("change", (e) => {
+	const endDate = document.getElementById("end-date");
+	const node = e.target;
+
+	for (let i = node.selectedIndex; i >= 0; i--) {
+		endDate.options[i].disabled = true;
+	}
+	if (endDate.selectedIndex < node.selectedIndex) {
+		endDate.selectedIndex = node.selectedIndex;
+	}
+	for (let i = node.selectedIndex; i < endDate.options.length; i++) {
+		endDate.options[i].disabled = false;
+	}
+});
+
 function deleteHost(e) {
 	chrome.storage.local.get(['pages'], (res) => {
 		delete res.pages[this.id];
@@ -96,16 +112,20 @@ function updateModal(e) {
 		const endDate = document.getElementById("end-date");
 		
 		siteStat.textContent = node.name;
-		while(startDate.lastChild) {
+		while (startDate.lastChild) {
 			startDate.removeChild(startDate.lastChild);
 			endDate.removeChild(endDate.lastChild);
 		}
-		for (let d in page.time) {
+
+		const sortedDates = Object.keys(page.time).sort(compareDate);
+		for (let d of sortedDates) {
+			const fmtDate = formatDashedDateString(d);
+
 			startDate.appendChild(
-				option(d, formatDashedDateString(d))
+				option(d, fmtDate)
 			);
 			endDate.appendChild(
-				option(d, formatDashedDateString(d))
+				option(d, fmtDate)
 			);
 		}
 	});
@@ -128,6 +148,19 @@ function formatDashedDateString(date) {
 	return ("0"+fields[2]).slice(-2) + "/" +
 		("0"+fields[1]).slice(-2) + "/" +
 		("0000"+fields[0]).slice(-4);
+}
+
+function compareDate(a, b) {
+	const UTCA = new Date(a).getTime();
+	const UTCB = new Date(b).getTime();
+	
+	if (UTCA > UTCB) {
+		return 1;
+	} else if (UTCA < UTCB) {
+		return -1;
+	} else {
+		return 0;
+	}
 }
 
 function anchor(link, text, evt) {
