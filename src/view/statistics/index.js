@@ -62,12 +62,45 @@ const usage = document.getElementById("usage");
 const custom = document.getElementById("custom");
 
 usage.addEventListener("change", (e) => {
-	if (e.target.value === "custom") {
+	const node = e.target;
+	const hostStats = document.getElementById("host-stats");
+	const graphic = document.getElementById("graphic");
+	const cUsageItem = document.getElementById("custom-usage-item");
+
+	if (node.value === "custom") {
 		custom.style.visibility = "inherit";
+		cUsageItem.style.visibility = "inherit";
+
+		updateCustomInterval(hostStats.name);
 	} else {
 		custom.style.visibility = "hidden";
+		cUsageItem.style.visibility = "hidden";
 	}
+
+	console.log(node.value);
+	// change the following line to plot the graphic
+	graphic.childNodes[1].textContent = "Showing data for " + node.value + " " + hostStats.name;
 });
+
+custom.addEventListener("change", (e) => {
+	const node = e.target;
+	
+	const hostStats = document.getElementById("host-stats");
+	updateCustomInterval(hostStats.name);
+});
+
+function updateCustomInterval(host) {
+	const cUsageNode = document.getElementById("custom-usage");
+	const startDate = document.getElementById("start-date");
+	const endDate = document.getElementById("end-date");
+
+	chrome.storage.local.get(['pages'], (res) => {
+		cUsageNode.textContent = getUsage(
+			res.pages[host],
+			[startDate.value, endDate.value]
+		)
+	});
+}
 
 const startDate = document.getElementById("start-date");
 startDate.addEventListener("change", (e) => {
@@ -105,6 +138,19 @@ function updateModal(e) {
 	const node = e.target;
 	console.log(node.name);
 	
+	const hostStats = document.getElementById("host-stats");
+	const custom = document.getElementById("custom");
+	const usage = document.getElementById("usage");
+	const graphic = document.getElementById("graphic");
+	const cUsageItem = document.getElementById("custom-usage-item");
+	
+	// Reset stuff;
+	graphic.childNodes[1].textContent = "Graphic was reset";
+	usage.selectedIndex = 0;
+	hostStats.name = node.name;
+	custom.style.visibility = "hidden";
+	cUsageItem.style.visibility = "hidden";
+	
 	chrome.storage.local.get(['pages'], (res) => {
 		const page = res.pages[node.name];
 		const siteStat = document.getElementById("site-stat");
@@ -128,10 +174,138 @@ function updateModal(e) {
 				option(d, fmtDate)
 			);
 		}
+
+		const yesterdayNode = document.getElementById("yesterday");
+		const todayNode = document.getElementById("today");
+		const weeklyNode = document.getElementById("weekly");
+		const monthlyNode = document.getElementById("monthly");
+		const yearlyNode = document.getElementById("yearly");
+		const intervalNode = document.getElementById("usage-interval");
+		const allTimeNode = document.getElementById("usage-all");
+		const cUsageNode = document.getElementById("custom-usage");
+
+		yesterdayNode.textContent = getUsage(
+			res.pages[node.name], getDateInterval["yesterday"]()
+		);
+		todayNode.textContent = getUsage(
+			res.pages[node.name], getDateInterval["today"]()
+		);
+		weeklyNode.textContent = getUsage(
+			res.pages[node.name], getDateInterval["weekly"]()
+		);
+		monthlyNode.textContent = getUsage(
+			res.pages[node.name], getDateInterval["monthly"]()
+		);
+		yearlyNode.textContent = getUsage(
+			res.pages[node.name], getDateInterval["yearly"]()
+		);
+
+		console.log(`today: ${getUsage(res.pages[node.name], 'today')}`);
+		console.log(`yesterday: ${getUsage(res.pages[node.name], 'yesterday')}`);
+		console.log(`last 7 days: ${getUsage(res.pages[node.name], 'weekly')}`);
+		console.log(`last 30 days: ${getUsage(res.pages[node.name], 'monthly')}`);
+		console.log(`this year: ${getUsage(res.pages[node.name], 'yearly')}`);
 	});
 
 	hostStats.style.display = "block";
+
 }
+
+const getDateInterval = {
+	today: () => {
+		const today = new Date();
+
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1;
+		const day = today.getDate();
+
+		return [
+			year + "-" + month + "-" + day, 
+			year + "-" + month + "-" + day
+		];
+	},
+	yesterday: () => {
+		const today = new Date();
+		const yesterday = new Date(today - 86400000);
+
+		const year = yesterday.getFullYear();
+		const month = yesterday.getMonth() + 1;
+		const day = yesterday.getDate();
+
+		return [
+			year + "-" + month + "-" + day, 
+			year + "-" + month + "-" + day
+		];
+	},
+	weekly: () => { // last 7 days
+		const today = new Date();
+		const lookupStart = new Date(today - 6 * 86400000);
+
+		const yearStart = lookupStart.getFullYear();
+		const monthStart = lookupStart.getMonth() + 1;
+		const dayStart = lookupStart.getDate();
+		const yearEnd = today.getFullYear();
+		const monthEnd = today.getMonth() + 1;
+		const dayEnd = today.getDate();
+
+		return [
+			yearStart + "-" + monthStart + "-" + dayStart,
+			yearEnd + "-" + monthEnd + "-" + dayEnd
+		];
+	},
+	monthly: () => { // last 30 days
+		const today = new Date();
+		const lookupStart = new Date(today - 29 * 86400000);
+
+		const yearStart = lookupStart.getFullYear();
+		const monthStart = lookupStart.getMonth() + 1;
+		const dayStart = lookupStart.getDate();
+		const yearEnd = today.getFullYear();
+		const monthEnd = today.getMonth() + 1;
+		const dayEnd = today.getDate();
+
+		return [
+			yearStart + "-" + monthStart + "-" + dayStart,
+			yearEnd + "-" + monthEnd + "-" + dayEnd
+		];
+	},
+	yearly: () => { // this year
+		const today = new Date();
+		const lookupStart = new Date(
+			today.getFullYear(), 0,	1
+		);
+		const lookupEnd = new Date(
+			today.getFullYear() + 1, 0, 0
+		);
+
+		const yearStart = lookupStart.getFullYear();
+		const monthStart = lookupStart.getMonth() + 1;
+		const dayStart = lookupStart.getDate();
+		const yearEnd = lookupEnd.getFullYear();
+		const monthEnd = lookupEnd.getMonth() + 1;
+		const dayEnd = lookupEnd.getDate();
+
+		return [
+			yearStart + "-" + monthStart + "-" + dayStart,
+			yearEnd + "-" + monthEnd + "-" + dayEnd
+		];
+	},
+};
+
+function getUsage(pages, interval) {
+	let totalTime = 0;
+
+	for (let t in pages.time) {
+		if (compareDate(t, interval[0]) >= 0 &&
+			compareDate(t, interval[1]) <= 0
+		) {
+			totalTime += pages.time[t];
+		}
+	}
+
+	return timeToHuman(totalTime / 1000);
+}
+
 
 function option(value, text) {
 	const opt = document.createElement("option");
