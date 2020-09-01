@@ -36,9 +36,9 @@
 	  <div class="middle-container">
             <label for="usage">Usage:</label>
             <select name="usage" id="usage">
-              <option value="0">Weekly</option>
-              <option value="1">Monthly</option>
-              <option value="2">Yearly</option>
+              <option value="weekly">Last 7 days</option>
+              <option value="monthly">Last 30 days</option>
+              <option value="yearly">This year</option>
               <option value="custom">Custom</option>
             </select>
             <div id="custom" class="custom">
@@ -55,10 +55,16 @@
               </h1>
             </div>
             <div class="extras">
-              <h4>Day with most usage time:</h4>
+              <h4>Usage statistics:</h4>
               <ul>
-		<li><span style="font-weight: bold">On the given interval:</span> <span id="most-interval" class="highlight">02/03/2004</span> with <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
-		<li><span style="font-weight: bold">Of all time:</span> <span id="most-all" class="highlight">01/03/1999</span> with <span id="usage-all" class="highlight">23 hours, 12 minutes and 36 seconds</span> of usage.</li>
+		<li><span style="font-weight: bold">Yesterday:</span> <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
+		<li><span style="font-weight: bold">Today:</span> <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
+		<li><span style="font-weight: bold">Last 7 days:</span> <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
+		<li><span style="font-weight: bold">Last 30 days:</span> <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
+		<li><span style="font-weight: bold">This year:</span> <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
+		<br>
+		<li><span style="font-weight: bold">On the given interval:</span> <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
+		<li><span style="font-weight: bold">Of all time:</span> <span id="usage-all" class="highlight">23 hours, 12 minutes and 36 seconds</span> of usage.</li>
               </ul>
             </div>
 	  </div>
