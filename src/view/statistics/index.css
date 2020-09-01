@@ -160,6 +160,10 @@ body {
   padding-top: 20px;
 }
 
+#custom-usage-item {
+  visibility: hidden;
+}
+
 .highlight {
   color: red;
   font-weight: bold;

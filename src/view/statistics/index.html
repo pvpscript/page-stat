@@ -36,6 +36,7 @@
 	  <div class="middle-container">
             <label for="usage">Usage:</label>
             <select name="usage" id="usage">
+              <option selected disabled>Select</option>
               <option value="weekly">Last 7 days</option>
               <option value="monthly">Last 30 days</option>
               <option value="yearly">This year</option>
@@ -55,16 +56,15 @@
               </h1>
             </div>
             <div class="extras">
-              <h4>Usage statistics:</h4>
+              <h4>Usage time statistics:</h4>
               <ul>
-		<li><span style="font-weight: bold">Yesterday:</span> <span id="yesterday" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
-		<li><span style="font-weight: bold">Today:</span> <span id="today" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
-		<li><span style="font-weight: bold">Last 7 days:</span> <span id="weekly" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
-		<li><span style="font-weight: bold">Last 30 days:</span> <span id="monthly" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
-		<li><span style="font-weight: bold">This year:</span> <span id="yearly" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
+		<li><span style="font-weight: bold">Yesterday:</span> <span id="yesterday" class="highlight">LOADING...</span>.</li>
+		<li><span style="font-weight: bold">Today:</span> <span id="today" class="highlight">LOADING...</span>.</li>
+		<li><span style="font-weight: bold">Last 7 days:</span> <span id="weekly" class="highlight">LOADING...</span>.</li>
+		<li><span style="font-weight: bold">Last 30 days:</span> <span id="monthly" class="highlight">LOADING...</span>.</li>
+		<li><span style="font-weight: bold">This year:</span> <span id="yearly" class="highlight">LOADING...</span>.</li>
 		<br>
-		<li><span style="font-weight: bold">On the given interval:</span> <span id="usage-interval" class="highlight">27 minutes and 44 seconds</span> of usage.</li>
-		<li><span style="font-weight: bold">Of all time:</span> <span id="usage-all" class="highlight">23 hours, 12 minutes and 36 seconds</span> of usage.</li>
+		<li id="custom-usage-item"><span style="font-weight: bold">On the given interval:</span> <span id="custom-usage" class="highlight">LOADING...</span>.</li>
               </ul>
             </div>
 	  </div>
