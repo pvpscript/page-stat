@@ -64,7 +64,7 @@ const custom = document.getElementById("custom");
 usage.addEventListener("change", (e) => {
 	const node = e.target;
 	const hostStats = document.getElementById("host-stats");
-	const graphic = document.getElementById("graphic");
+	const chart = document.getElementById("chart");
 	const cUsageItem = document.getElementById("custom-usage-item");
 
 	if (node.value === "custom") {
@@ -78,8 +78,8 @@ usage.addEventListener("change", (e) => {
 	}
 
 	console.log(node.value);
-	// change the following line to plot the graphic
-	graphic.childNodes[1].textContent = "Showing data for " + node.value + " " + hostStats.name;
+	// change the following line to plot the chart
+	chart.childNodes[1].textContent = "Showing data for " + node.value + " " + hostStats.name;
 });
 
 custom.addEventListener("change", (e) => {
@@ -141,11 +141,11 @@ function updateModal(e) {
 	const hostStats = document.getElementById("host-stats");
 	const custom = document.getElementById("custom");
 	const usage = document.getElementById("usage");
-	const graphic = document.getElementById("graphic");
+	const chart = document.getElementById("chart");
 	const cUsageItem = document.getElementById("custom-usage-item");
 	
 	// Reset stuff;
-	graphic.childNodes[1].textContent = "Graphic was reset";
+	chart.childNodes[1].textContent = "Graphic was reset";
 	usage.selectedIndex = 0;
 	hostStats.name = node.name;
 	custom.style.visibility = "hidden";
