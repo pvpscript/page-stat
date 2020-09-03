@@ -154,6 +154,8 @@ body {
 
 .chart {
   border: 1px solid black;
+  width: 100%;
+  height: 30%;
 }
 
 .extras {
