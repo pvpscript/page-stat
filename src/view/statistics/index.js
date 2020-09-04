@@ -64,7 +64,7 @@ const custom = document.getElementById("custom");
 usage.addEventListener("change", (e) => {
 	const node = e.target;
 	const hostStats = document.getElementById("host-stats");
-	const chart = document.getElementById("chart-container");
+	const chart = document.getElementById("chart-wrapper");
 	const cUsageItem = document.getElementById("custom-usage-item");
 
 	if (node.value === "custom") {
@@ -141,7 +141,7 @@ function updateModal(e) {
 	const hostStats = document.getElementById("host-stats");
 	const custom = document.getElementById("custom");
 	const usage = document.getElementById("usage");
-	const chart = document.getElementById("chart-container");
+	const chart = document.getElementById("chart-wrapper");
 	const cUsageItem = document.getElementById("custom-usage-item");
 	
 	// Reset stuff;
