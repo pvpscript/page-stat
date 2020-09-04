@@ -152,10 +152,12 @@ body {
   color: red;
 }
 
-.chart {
+.chart-container {
   border: 1px solid black;
+  position: relative;
   width: 100%;
   height: 30%;
+  overflow-x: auto;
 }
 
 .extras {
