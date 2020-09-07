@@ -13,18 +13,54 @@ const config = {
 			// pointHoverRadius: 7
 			borderWidth: 1,
 			//minBarLength: 2,
+			maxBarThickness: 30,
+			//barThickness: 30,
 			minBarLength: (context) => {
 				return context.dataset.data[context.dataIndex] ? 2 : 0
 			},
 		}]
 	},
+	plugins: [{
+		afterUpdate: function(chart, options) {
+			const chartMaxBarWidth = chart.data.datasets[0].maxBarThickness; // 30
+			if (chart.getDatasetMeta(0).data[0] && chart.getDatasetMeta(0).data[0]._model.width < chartMaxBarWidth) {
+				const widthPercentage = chart.getDatasetMeta(0).data[0]._model.width * chart.getDatasetMeta(0).data.length / chart.scales["x-axis-0"].width; // 72%
+				const chartWrapperRelation = chart.scales["x-axis-0"].width / document.getElementById("chart-wrapper").offsetWidth;
+				const maxBarWidth = chart.scales["x-axis-0"].width * widthPercentage;
+
+				const newWrapperWidth = Math.ceil((chart.getDatasetMeta(0).data.length * chartMaxBarWidth) / (chartWrapperRelation * widthPercentage));
+
+				const chartWrapper = document.getElementById("chart-wrapper");
+				chartWrapper.style.width = newWrapperWidth;
+				//console.log("--------------------");
+				//console.log(maxBarWidth);
+				//console.log(chartWrapperRelation);
+				//console.log(newWrapperWidth);
+			}
+
+			//console.log("chart");
+			//console.log(chart);
+			//console.log("options");
+			//console.log(options);
+			//if (chart.scales["x-axis-0"]._gridLineItems) {
+			//	chart.scales["x-axis-0"]._gridLineItems.borderValue = 500; 
+			//	console.log("XOPOWOZOU");
+			//}
+		},
+	}],
 	options: {
+		animations: {
+			onProgress: (animation) => {
+				console.log(animation);
+			}
+		},
 		scales: {
 			xAxes: [{
 				type: 'time',
 				position: 'bottom',
 				stacked: false,
-				maxBarThickness: 30,
+				//maxBarThickness: 30,
+				//barThickness: 30,
 				time: {
 					displayFormats: {
 						parser: "YY-MM-DD",
@@ -47,8 +83,8 @@ const config = {
 					// max: moment('1970-01-01 23:59:59').valueOf(),
 					stepSize: 3.6e+6,
 					callback: (val) => {
-						let date = new Date(val);
-						console.log(val);
+						//let date = new Date(val);
+						//console.log(val);
 						// console.log(date.diff(moment('1970-01-01 23:59:59'), 'minutes'));
 						// if(date.diff(moment('1970-01-01 23:59:59'), 'minutes') === 0) {
 						//   return null;
@@ -110,8 +146,41 @@ function timeToHumanHours(time) {
 //	},
 //});
 
+let chart = null;
+let starterino = new Date("2020-01-01 00:00:00").getTime()
+function oneAtATime() {
+	if (!chart) {
+		chart = new Chart(ctx, config);
+	}
+	const rngHours = Math.ceil(Math.random() * 24);
+	const rngMins = Math.ceil(Math.random() * 59);
+	const rngSecs = Math.ceil(Math.random() * 59);
+	const time = ("0" + rngHours).slice(-2) + ":" + ("0" + rngMins).slice(-2) + ":" + ("0" + rngSecs).slice(-2);
+	const timesData = Date.UTC(1970, 0, 1, ...time.split(":"));
+
+	const date = new Date(starterino);
+	const dateStr = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+	
+
+	console.log(dateStr, timesData);
+
+	chart.data.labels.push(dateStr)
+	chart.data.datasets[0].data.push(timesData);
+	chart.update();
+
+	starterino += 86400000;
+
+	//let element = document.querySelector(".chart-wrapper");
+	//let width = element.offsetWidth;
+	//width += 30;
+	//element.style.width = width;
+}
+
+
+
 function drawStuff() {
 	const chart = new Chart(ctx, config);
+	console.log(chart);
 //	chart.config.options.maintainAspectRatio = false;
 //	chart.canvas.parentNode.style.height = "30%";
   	chart.data.datasets.forEach((dataset) => {
