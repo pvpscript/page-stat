@@ -75,11 +75,13 @@ usage.addEventListener("change", (e) => {
 	} else {
 		custom.style.visibility = "hidden";
 		cUsageItem.style.visibility = "hidden";
+
+		updateChartInterval(hostStats.name, node.value);
 	}
 
 	console.log(node.value);
 	// change the following line to plot the chart
-	chart.childNodes[1].textContent = "Showing data for " + node.value + " " + hostStats.name;
+	//chart.childNodes[1].textContent = "Showing data for " + node.value + " " + hostStats.name;
 });
 
 custom.addEventListener("change", (e) => {
@@ -89,16 +91,30 @@ custom.addEventListener("change", (e) => {
 	updateCustomInterval(hostStats.name);
 });
 
+function updateChartInterval(host, interval) {
+	chrome.storage.local.get(["pages"], (res) => {
+		const page = res.pages[host];
+
+		drawChart(getUsageInterval(
+			page, getDateInterval[interval]()
+		));
+	});
+}
+
 function updateCustomInterval(host) {
 	const cUsageNode = document.getElementById("custom-usage");
 	const startDate = document.getElementById("start-date");
 	const endDate = document.getElementById("end-date");
 
 	chrome.storage.local.get(['pages'], (res) => {
+		const page = res.pages[host];
 		cUsageNode.textContent = getUsage(
-			res.pages[host],
+			page,
 			[startDate.value, endDate.value]
-		)
+		);
+		drawChart(getUsageInterval(
+			page, [startDate.value, endDate.value]
+		));
 	});
 }
 
@@ -145,7 +161,7 @@ function updateModal(e) {
 	const cUsageItem = document.getElementById("custom-usage-item");
 	
 	// Reset stuff;
-	chart.childNodes[1].textContent = "Graphic was reset";
+	//chart.childNodes[1].textContent = "Graphic was reset";
 	usage.selectedIndex = 0;
 	hostStats.name = node.name;
 	custom.style.visibility = "hidden";
@@ -184,27 +200,36 @@ function updateModal(e) {
 		const allTimeNode = document.getElementById("usage-all");
 		const cUsageNode = document.getElementById("custom-usage");
 
+		//for (let t in page.time) {
+		//	chart.data.labels.push(formatDashedDateString(t));
+		//	chart.data.datsets[0].data.push(page[t]);
+		//};
+		//chart.update();
+		drawChart(getUsageInterval(page, getDateInterval["weekly"]()));
+		//console.log(getUsageInterval(page, getDateInterval["weekly"]()));
+		//console.log(page.time);
+
 		yesterdayNode.textContent = getUsage(
-			res.pages[node.name], getDateInterval["yesterday"]()
+			page, getDateInterval["yesterday"]()
 		);
 		todayNode.textContent = getUsage(
-			res.pages[node.name], getDateInterval["today"]()
+			page, getDateInterval["today"]()
 		);
 		weeklyNode.textContent = getUsage(
-			res.pages[node.name], getDateInterval["weekly"]()
+			page, getDateInterval["weekly"]()
 		);
 		monthlyNode.textContent = getUsage(
-			res.pages[node.name], getDateInterval["monthly"]()
+			page, getDateInterval["monthly"]()
 		);
 		yearlyNode.textContent = getUsage(
-			res.pages[node.name], getDateInterval["yearly"]()
+			page, getDateInterval["yearly"]()
 		);
 
-		console.log(`today: ${getUsage(res.pages[node.name], 'today')}`);
-		console.log(`yesterday: ${getUsage(res.pages[node.name], 'yesterday')}`);
-		console.log(`last 7 days: ${getUsage(res.pages[node.name], 'weekly')}`);
-		console.log(`last 30 days: ${getUsage(res.pages[node.name], 'monthly')}`);
-		console.log(`this year: ${getUsage(res.pages[node.name], 'yearly')}`);
+		console.log(`today: ${getUsage(page, 'today')}`);
+		console.log(`yesterday: ${getUsage(page, 'yesterday')}`);
+		console.log(`last 7 days: ${getUsage(page, 'weekly')}`);
+		console.log(`last 30 days: ${getUsage(page, 'monthly')}`);
+		console.log(`this year: ${getUsage(page, 'yearly')}`);
 	});
 
 	hostStats.style.display = "block";
@@ -306,6 +331,19 @@ function getUsage(pages, interval) {
 	return timeToHuman(totalTime / 1000);
 }
 
+function getUsageInterval(pages, interval) {
+	const usageInterval = {};
+
+	for (let t in pages.time) {
+		if (compareDate(t, interval[0]) >= 0 &&
+			compareDate(t, interval[1]) <= 0
+		) {
+			usageInterval[t] = pages.time[t];
+		}
+	}
+
+	return usageInterval;
+}
 
 function option(value, text) {
 	const opt = document.createElement("option");
