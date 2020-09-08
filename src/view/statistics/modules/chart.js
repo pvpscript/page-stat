@@ -1,4 +1,4 @@
-const ctx = document.getElementById('chart').getContext('2d');
+let ctx = document.getElementById('chart').getContext('2d');
 const config = {
 	type: 'bar',
 	data: {
@@ -13,7 +13,7 @@ const config = {
 			// pointHoverRadius: 7
 			borderWidth: 1,
 			//minBarLength: 2,
-			maxBarThickness: 30,
+			maxBarThickness: 20,
 			//barThickness: 30,
 			minBarLength: (context) => {
 				return context.dataset.data[context.dataIndex] ? 2 : 0
@@ -22,15 +22,20 @@ const config = {
 	},
 	plugins: [{
 		afterUpdate: function(chart, options) {
-			const chartMaxBarWidth = chart.data.datasets[0].maxBarThickness; // 30
-			if (chart.getDatasetMeta(0).data[0] && chart.getDatasetMeta(0).data[0]._model.width < chartMaxBarWidth) {
-				const widthPercentage = chart.getDatasetMeta(0).data[0]._model.width * chart.getDatasetMeta(0).data.length / chart.scales["x-axis-0"].width; // 72%
-				const chartWrapperRelation = chart.scales["x-axis-0"].width / document.getElementById("chart-wrapper").offsetWidth;
-				const maxBarWidth = chart.scales["x-axis-0"].width * widthPercentage;
+			const chartWrapper = document.getElementById("chart-wrapper");
 
-				const newWrapperWidth = Math.ceil((chart.getDatasetMeta(0).data.length * chartMaxBarWidth) / (chartWrapperRelation * widthPercentage));
+			const chartMaxBarWidth = chart.data.datasets[0].maxBarThickness;
+			const scalesX = chart.scales["x-axis-0"];
+			const dataset = chart.getDatasetMeta(0).data;
 
-				const chartWrapper = document.getElementById("chart-wrapper");
+			if (dataset[0] && dataset[0]._model.width < chartMaxBarWidth) {
+				const widthPercentage = dataset[0]._model.width * dataset.length / scalesX.width;
+				const chartWrapperRelation = scalesX.width / chartWrapper.offsetWidth;
+				const maxBarWidth = scalesX.width * widthPercentage;
+
+				const newWrapperWidth = Math.ceil((dataset.length * chartMaxBarWidth) /
+					(chartWrapperRelation * widthPercentage));
+
 				chartWrapper.style.width = newWrapperWidth;
 				//console.log("--------------------");
 				//console.log(maxBarWidth);
@@ -62,8 +67,8 @@ const config = {
 				//maxBarThickness: 30,
 				//barThickness: 30,
 				time: {
+					parser: "YYYY-MM-DD",
 					displayFormats: {
-						parser: "YY-MM-DD",
 						day: 'YYYY/MM/DD',
 					},
 					unit: 'day',
@@ -176,7 +181,25 @@ function oneAtATime() {
 	//element.style.width = width;
 }
 
+function drawChart(time) {
+	if (window.chartObj) {
+		// Chart reset workaround
+		window.chartObj.data.labels = [];
+		window.chartObj.data.datasets[0].data = [];
+		window.chartObj.update(config);
+		window.chartObj.ctx.canvas.parentNode.style.width = "100%";
+	} else {
+		window.chartObj = new Chart(ctx, config);
+	}
 
+	for (let t in time) {
+		console.log(t);
+		console.log(time[t]);
+		window.chartObj.data.labels.push(t);
+		window.chartObj.data.datasets[0].data.push(time[t]);
+	};
+	window.chartObj.update();
+}
 
 function drawStuff() {
 	const chart = new Chart(ctx, config);
@@ -195,15 +218,15 @@ function drawStuff() {
 		//	const rng = Math.ceil(100 * Math.random());
 		//	dataset.data.push(moment().add(rng, 'd'));
 		//}
-		let element = document.querySelector(".chart-wrapper");
-		let width = element.offsetWidth;
+		//let element = document.querySelector(".chart-wrapper");
+		//let width = element.offsetWidth;
 
 		for (let i = 0; i < years.length; i++) {
 			chart.data.labels.push(years[i]);
 			dataset.data.push(timesData[i]);
-			console.log(`${i} -> ${element.offsetWidth}`);
-			width += 30;
-			element.style.width = width;
+			//console.log(`${i} -> ${element.offsetWidth}`);
+			//width += 30;
+			//element.style.width = width;
 		}
 		//years.forEach((y) => chart.data.labels.push(y));
 		//timesData.forEach((t) => dataset.data.push(t));
@@ -212,3 +235,5 @@ function drawStuff() {
   	console.log(chart);
 };
 /* myChart.data = [12, 19, 3, 5, 2, 3]; */
+
+export { drawChart };
