@@ -9,7 +9,6 @@
 */
 body {
   width: 300px;
-  height: 200px;
   margin: 0;
 }
 
@@ -62,25 +61,6 @@ body {
 .spent .spent-time {
   color: #4A8F06;
   display: block;
-}
-
-.options {
-  margin-top: 5%;
-  position: fixed;
-  width: 300px;
-  bottom: 0;
-}
-
-.options > button {
-  display: block;
-  width: 100%;
-  border: 1px solid black;
-  border-left: none;
-  border-right: none;
-}
-
-.options button:not(:last-child) {
-  border-bottom: none;
 }
 
 .switch__container {
