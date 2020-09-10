@@ -34,7 +34,7 @@ chrome.storage.local.get(['pages'], (res) => {
 
 	let index = 1;
 	const sHostTime = hostTime.sort((a, b) => {
-		return b[1] - a[1];
+		return b.time - a.time;
 	});
 
 	for (let e of sHostTime) {
@@ -55,7 +55,7 @@ chrome.storage.local.get(['pages'], (res) => {
 
 		const usageCell = row.insertCell();
 		const bar = progressBar(
-			(e.time / sHostTime[0][1]) * 100,
+			(e.time / sHostTime[0].time) * 100,
 			timeToHuman(e.time / 1000)
 		);
 		usageCell.appendChild(bar);
