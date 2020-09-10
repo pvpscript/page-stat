@@ -62,8 +62,12 @@ body {
 }
 
 .host-container {
-  display: inline-block;
+  display: table-row;
   cursor: pointer;
+}
+
+.host-container > * {
+  vertical-align: middle;
 }
 
 .host-favicon {
