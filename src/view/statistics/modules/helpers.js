@@ -45,7 +45,7 @@ function deleteHost(e) { // (helper) used by the 'storage get' populator
 function updateModal(e) { // (helper) used by the 'storage get' populator
 	//e.preventDefault();
 
-	const node = e.target.parentElement;
+	const node = e.currentTarget;
 	console.log("Hallal");
 	console.log(e);
 	console.log(node);
