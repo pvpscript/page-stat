@@ -6,7 +6,13 @@ import {
 	updateChartInterval
 } from "./modules/helpers.js";
 
-import { anchor, progressBar, svgReference } from "./modules/html-builders.js";
+import {
+	imgNode,
+	spanNode,
+	divNode,
+	progressBar,
+	svgReference
+} from "./modules/html-builders.js";
 
 chrome.storage.local.get(['pages'], (res) => {
 	const sites = document.getElementById("sites");
@@ -19,7 +25,11 @@ chrome.storage.local.get(['pages'], (res) => {
 			totalTime += pages[host].time[t];
 		}
 		
-		hostTime.push([host, totalTime]);
+		hostTime.push({
+			host: host,
+			time: totalTime,
+			favicon: pages[host].favicon,
+		});
 	}
 
 	let index = 1;
@@ -28,26 +38,32 @@ chrome.storage.local.get(['pages'], (res) => {
 	});
 
 	for (let e of sHostTime) {
-		const host = e[0];
-		const time = e[1];
-
 		const row = sites.insertRow();
-		const cell = row.insertCell();
-		cell.appendChild(document.createTextNode(index++));
-		const cell2 = row.insertCell();
-		cell2.appendChild(anchor(host, host, updateModal));
-		const cell3 = row.insertCell();
+		const indexCell = row.insertCell();
+		indexCell.appendChild(document.createTextNode(index++));
 
-		const bar = progressBar(
-			(time / sHostTime[0][1]) * 100,
-			timeToHuman(time / 1000)
+		const hostCell = row.insertCell();
+		const img = imgNode(["host-favicon"], e.favicon);
+		const span = spanNode(["host-link"], e.host);
+		const div = divNode(
+			["host-container"],
+			[img, span],
+			e.host,
+			updateModal
 		);
-		cell3.appendChild(bar);
+		hostCell.appendChild(div);
 
-		const cell4 = row.insertCell();
-		cell4.classList.add("trash-container");
-		cell4.appendChild(
-			svgReference("trash", host, deleteHost)
+		const usageCell = row.insertCell();
+		const bar = progressBar(
+			(e.time / sHostTime[0][1]) * 100,
+			timeToHuman(e.time / 1000)
+		);
+		usageCell.appendChild(bar);
+
+		const optionCell = row.insertCell();
+		optionCell.classList.add("trash-container");
+		optionCell.appendChild(
+			svgReference("trash", e.host, deleteHost)
 		);
 	}
 });

@@ -43,10 +43,14 @@ function deleteHost(e) { // (helper) used by the 'storage get' populator
 }
 
 function updateModal(e) { // (helper) used by the 'storage get' populator
-	e.preventDefault();
+	//e.preventDefault();
 
-	const node = e.target;
+	const node = e.target.parentElement;
+	console.log("Hallal");
+	console.log(e);
+	console.log(node);
 	console.log(node.name);
+	console.log("Hellele");
 	
 	const hostStats = document.getElementById("host-stats");
 	const custom = document.getElementById("custom");
@@ -57,17 +61,17 @@ function updateModal(e) { // (helper) used by the 'storage get' populator
 	// Reset stuff;
 	//chart.childNodes[1].textContent = "Graphic was reset";
 	usage.selectedIndex = 0;
-	hostStats.name = node.name;
+	hostStats.name = node.getAttribute("name");
 	custom.style.visibility = "hidden";
 	cUsageItem.style.visibility = "hidden";
 	
 	chrome.storage.local.get(["pages"], (res) => {
-		const page = res.pages[node.name];
+		const page = res.pages[node.getAttribute("name")];
 		const siteStat = document.getElementById("site-stat");
 		const startDate = document.getElementById("start-date");
 		const endDate = document.getElementById("end-date");
 		
-		siteStat.textContent = node.name;
+		siteStat.textContent = node.getAttribute("name");
 		while (startDate.lastChild) {
 			startDate.removeChild(startDate.lastChild);
 			endDate.removeChild(endDate.lastChild);

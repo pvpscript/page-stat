@@ -7,6 +7,15 @@ function option(value, text) { // (html builder) used by helpers.
 	return opt;
 }
 
+function imgNode(classList, src) {
+	const img = document.createElement("img");
+
+	img.src = src;
+	classList.forEach((c) => img.classList.add(c));
+
+	return img;
+}
+
 function anchor(link, text, evt) { // (html builder) used by the populator
 	const a = document.createElement("a");
 	
@@ -22,6 +31,31 @@ function anchor(link, text, evt) { // (html builder) used by the populator
 	a.appendChild(document.createTextNode(text));
 
 	return a;
+}
+
+function spanNode(classList, text) {
+	const span = document.createElement("span");
+
+	classList.forEach((c) => span.classList.add(c));
+	span.textContent = text;
+
+	return span;
+}
+
+function divNode(classList, nodeList, name, evt) {
+	const div = document.createElement("div");
+
+	if (name) {
+		div.setAttribute("name", name);
+	}
+	if (evt) {
+		div.addEventListener("click", evt);
+	}
+
+	classList.forEach((c) => div.classList.add(c));
+	nodeList.forEach((n) => div.appendChild(n));
+
+	return div;
 }
 
 function progressBar(perc, text) { // (html builder) used by the populator
@@ -76,4 +110,12 @@ function svgReference(refId, elementId, evt) { // (html builder) used by the pop
 	return button;
 }
 
-export { option, anchor, progressBar, svgReference };
+export { 
+	option,
+	anchor,
+	imgNode,
+	spanNode,
+	divNode,
+	progressBar,
+	svgReference
+};

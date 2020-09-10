@@ -61,6 +61,20 @@ body {
   color: #000;
 }
 
+.host-container {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.host-favicon {
+  margin-right: 5px;
+}
+
+.host-link {
+  color: #82D6C8;
+  text-decoration: underline;
+}
+
 .progress {
   width: 250px;
   height: 20px;
