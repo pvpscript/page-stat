@@ -1,6 +1,7 @@
 const hostname = document.getElementById("hostname");
 const cbSwitch = document.getElementById("switch-shadow");
 const spentTime = document.getElementById("spent-time");
+const showStat = document.getElementById("showStatistics");
 
 cbSwitch.addEventListener('change', (e) => {
 	chrome.runtime.sendMessage({
@@ -18,6 +19,12 @@ chrome.runtime.sendMessage({type: "popup", data: null}, (res) => {
 	}
 
 	spentTime.innerText = getFormattedTime(res.time);
+});
+
+showStat.addEventListener("click", (e) => {
+	chrome.tabs.create({
+		url: "../view/statistics/index.html"
+	});
 });
 
 function getFormattedTime(time) {

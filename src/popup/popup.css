@@ -13,7 +13,7 @@ body {
 }
 
 .content {
-  width: 300px;
+  width: 100%;
 }
 
 .header {
@@ -119,4 +119,23 @@ body {
 
 .switch--shadow:checked + label:after {
   transform: translate(20px);
+}
+
+.options {
+  margin-top: 5%;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
+
+.options > button {
+  display: block;
+  width: 100%;
+  border: 1px solid black;
+  border-left: none;
+  border-right: none;
+}
+
+.options button:not(:last-child) {
+  border-bottom: none;
 }
