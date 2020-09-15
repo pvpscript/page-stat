@@ -14,7 +14,15 @@
     <div class="main">
       <div id="how-to-use" class="tab-content">
         <h1>How to use</h1>
-	<p>How to use the extension</p>
+	<p>Right after installing the extension, it will start collecting time data from the sites accessed by following the default settings, defined in the <span class="highlight">Setting</span> section that can be found in the menu on the left.</p>
+	<p>Clicking on the extension menu, it will show up information about the current site.<p>
+	<figure>
+	  <img src="../images/menu.png" alt="menu" class="center-image">
+	  <figcaption>Extension menu</figcaption>
+	</figure>
+	<p>The first two lines of information give the current <span class="highlight">host name</span> and the <span class="highlight">host status</span>. The host status tells if the extension is collecting the usage time for the current host. By deactivating it, it will stop calculating the <span class="highlight">time spent</span>. This configuration can be changed anytime by visiting the host again or by going into the <span class="highlight">Settings</span> section.</p>
+	<p>The middle section displays the <span class="highlight">time spent</span> in that host on the current day.</p>
+	<p>Lastly, the <span class="highlight">Show statistics</span> button opens up the overall statistics page, where it shows usage statistics for every visited page since the extension was installed. The same page can be accessed by clicking the <span class="highlight">Statistics</span> option in the menu on the left.</p>
       </div>
       <div id="settings" class="tab-content">
         <h1>Settings</h1>
@@ -65,7 +73,7 @@
 	<p>This is a very large number, but keep in mind that it's the 'worst case scenario' for a very long usage span.</p>
 	<p>The code used for this estimation can be found <a href="https://gist.github.com/pvpscript/37c5999a1d32927f25630f2fc907ebb0">here</a>.</p>
 	<h3>Current storage</h3>
-	<p>The current local storage value in bytes is: <span class="usage" id="curr-usage"></span></p>
+	<p>The current local storage value in bytes is: <span class="highlight" id="curr-usage"></span></p>
 	<h3>Export data</h3>
 	<p>Right-click the 'export' link and choose 'Save link as...' to save.</p>
 	<p style="margin-bottom: 5px;">Pages storage data (local): <a name="download" id="pagesStorage">export</a>.</p>
