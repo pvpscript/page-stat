@@ -1,4 +1,4 @@
-window.location.hash = "#storage";
+window.location.hash = "#how-to-use";
 
 // Populate inputs
 chrome.storage.sync.get(['config'], (res) => {
