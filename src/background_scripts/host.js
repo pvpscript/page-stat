@@ -6,6 +6,8 @@ class Host {
 }
 
 async function updatePageTime(host) {
+	log(`Updating page time for "${host.host}"`)
+
 	const page = pagesCache[host.host];
 	const todayDate = today();
 	//pagesCache[Math.floor(Math.random()*10)] = Math.random().toString(36);

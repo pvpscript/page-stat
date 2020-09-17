@@ -7,6 +7,8 @@ const validTypesConfig = {
 
 // Ugly >>temporary<< JSON validator! (I'll make it better!)
 function validateHosts(obj, callback) {
+    log("Validating hosts file");
+
     for (let i in obj) {
         if (typeof obj[i] === "object") {
             for (let j in obj[i]) {
@@ -47,6 +49,8 @@ function validateHosts(obj, callback) {
 
 // More uglyness
 function validateSettings(obj, callback) {
+	log("Validating settings file");
+
 	for (let i in obj) {
 		const expected = validTypesConfig[i];
 		const got = typeof obj[i];

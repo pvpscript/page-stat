@@ -8,6 +8,8 @@ const focused = new Map();
  */
 
 async function updateFocus(windowId, urlContainer) {
+	log(`Updating focus on window ${windowId}`);
+
 	const hasFocus = focused.get(windowId);
 	const currentHost = urlContainer.url.host;
 

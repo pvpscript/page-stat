@@ -1,4 +1,6 @@
 async function updateStorage(url, validator, response, update) {
+	log("Updating storage.");
+
 	const result = await fetch(url).then((res) => res.json());
 
 	validator(result, (stat, msg) => {
@@ -18,6 +20,8 @@ const methods = {
 		const hostStatus = data.hostStatus;
 		const host = (new URL(tab.url)).host;
 
+		log(`Changing status for ${host}`);
+
 		if (hostStatus) {
 			configCache.inactive.push(host);
 		} else {
@@ -31,6 +35,8 @@ const methods = {
 		await updateFocus(tab.windowId, urlContainer);
 	},
 	popup: async (tab, data, response) => {
+		log("Updating popup data");
+
 		const urlContainer = buildURL(tab.url);
 		const host = urlContainer.url.host;
 		const hasFocus = focused.get(tab.windowId);
@@ -51,6 +57,8 @@ const methods = {
 		});
 	},
 	settingsImport: async (tab, data, response) => {
+		log("Importing settings data");
+
 		await updateStorage(
 			data.url,
 			validateSettings,
@@ -62,6 +70,8 @@ const methods = {
 		);
 	},
 	pagesImport: async (tab, data, response) => {
+		log("Importing pages data");
+
 		await updateStorage(
 			data.url,
 			validateHosts,
@@ -73,16 +83,19 @@ const methods = {
 		);
 	},
 	updateConfigCache: async (tab, data, response) => {
+		log("Updating config storage cache");
+
 		configCache = data.config;
 	},
 	updatePagesCache: async (tab, data, response) => {
+		log("Updating pages storage cache");
+
 		pagesCache = data.pages;
 	},
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	console.log("Listener request");
-	console.log(request);
+	log(`Message received (${request.type})`);
 
 	const action = methods[request.type];
 
@@ -95,6 +108,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
+	log("Extension installed/updated");
+
 	chrome.storage.local.set({
 		pages: {}, /* Pages dictionary, with time already computed. */
 	});
@@ -111,6 +126,8 @@ let configCache = {
 };
 
 chrome.runtime.onStartup.addListener(() => {
+	log("Extension started up");
+
 	chrome.storage.sync.get(['config'], (res) => {
 		if (res.config) {
 			configCache = res.config;

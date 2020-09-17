@@ -1,6 +1,6 @@
 const alarmAction = {
 	updatePageTime: async () => {
-		console.log("alarm -> updatePageTime");
+		log("Updating page time for every focused host");
 		/*
 		if (configCache.focusedOnly) {
 			chrome.windows.getLastFocused(null, async (win) => {
@@ -25,6 +25,7 @@ const alarmAction = {
 chrome.alarms.onAlarm.addListener(async (alarm) => {
 	const action = alarmAction[alarm.name];
 
+	log(`Fired up alarm: ${alarm.name}`);
 	await action();
 });
 

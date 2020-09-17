@@ -15,8 +15,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 			*/
 
 			if (urlContainer) {
-				console.log(`Tab just got activated: ${urlContainer.url}`);
-				console.log(tab);
+				log(`Tab ${activeInfo.tabId} just got activated with URL: ${urlContainer.url}`);
 
 				await updateFocus(tab.windowId, urlContainer);
 			}
@@ -54,8 +53,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 			const urlContainer = buildURL(tab.url);
 
 			if (urlContainer) {
-				console.log(`Tab just got updated: ${urlContainer.url}`);
-				console.log(tab);
+				log(`Tab ${tabId} just got activated with URL: ${urlContainer.url}`);
 
 				await updateFocus(tab.windowId, urlContainer);
 			}
@@ -73,5 +71,5 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
-	console.log(`Tab just got removed: ${tabId}`);
+	log(`Tab ${tabId} just got removed`);
 });
