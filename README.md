@@ -48,7 +48,32 @@ Explain how to use the extension in the major browsers.
 [options-menu]: /images/right-click-menu.png "Right click menu."
 
 # Storage
-Discuss about the unlimitedStorage permission, explain the usage estimation and talk about how the extension uses data.
+Information regarding the storage.
+
+## Why unlimited?
+It was decided to use unlimited storage for the simple reason that the default maximum storage value is way too prohibitive, speaking for long term usage of this extension. If this is used long enough and lots of sites as accessed daily, it can take over 8MB of data (see estimation below).
+
+## Estimation
+To understand the estimation, let's consider the extension's storage structure, as seen below:
+
+```
+{
+    "host": {
+        "favicon": "base64 favicon data",
+        "time": {
+            "date": "usage time"
+        }
+    }
+}
+```
+
+It's also important to consider that this is the structure for a single host and a single date. The real world usage would have several hosts and several dates for each host.
+
+With that in mind, an estimation was taken considering the current google favicon as base64, for a usage gap of 10 years with 1000 hosts, each one having a whole day usage every single day, and it yielded a usage of `84926001B`, which roughly translates to `84.9MB`.
+
+This is a very large number, but keep in mind that it's the 'worst case scenario' for a very long usage span.
+
+The code used for this estimation can be found [here](https://gist.github.com/pvpscript/37c5999a1d32927f25630f2fc907ebb0).
 
 # Browser compatibility
 This extension is compatible with **Firefox**; **Google Chrome and derivatives**; **Opera**.
