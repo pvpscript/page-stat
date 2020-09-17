@@ -25,7 +25,27 @@ A very obvious solution to this would be to listen to possible changes on the br
 For this reason, this solution is not the best in this case, but when I started working on this extension I had no idea where I was getting myself into, since I've had neved wrote a browser extension before, and I've also already spent way too much time working on this, so that will be a fix for later.
 
 # Using the extension
+Right after installing the extension, it will start collecting time data from the sites accessed by following the default settings, defined in the `Setting` section that can be found in the page  shown by options menu, that can be accessed by right clicking the extension's menu.
+
+![alt text][options-page]
+
+![alt text][options-menu]
+
+Clicking on the extension menu, it will show up information about the current site, disclosed on the extension's menu, showin by the following image.
+
+![alt text][menu]
+
+The first two lines of information give the current `host name` and the `host status`. The host status tells if the extension is collecting the usage time for the current host. By deactivating it, it will stop calculating the `time spent`. This configuration can be changed anytime by visiting the host again or by going into the `Settings` section.
+
+The middle section displays the `time spent` in that host on the current day.
+
+Lastly, the `Show statistics` button opens up the overall statistics page, where it shows usage statistics for every visited page since the extension was installed. The same page can be accessed by clicking the `Statistics` option in the menu on the left.
+
 Explain how to use the extension in the major browsers.
+
+[menu]: /images/menu.png "Extension's menu."
+[options-page]: /images/options.png "Options page, showing side menu."
+[options-menu]: /images/right-click-menu.png "Right click menu."
 
 # Storage
 Discuss about the unlimitedStorage permission, explain the usage estimation and talk about how the extension uses data.
