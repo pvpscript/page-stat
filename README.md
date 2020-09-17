@@ -13,7 +13,7 @@ For measuring the time spent on a site, the extension stores a `map` containing 
 {
 	host: 'host name',
 	focusedAt: 0123456789, // Unix timestamp
-};
+}
 ```
 
 For calculating the time spent, the extension listens for each tab status, and when one of the focused hosts goes out of focus, a calculation is made by subtracting the moment when the site lost focus by the moment it was focused for the last time. And lastly, the current usage time for the host is incremented by the value obtained.
@@ -23,6 +23,8 @@ This approach is good for not relying on infinite loops for calculating time, wh
 A very obvious solution to this would be to listen to possible changes on the browser window focus, but the current extension API is unreliable for that matter. See [issue 391471](https://bugs.chromium.org/p/chromium/issues/detail?id=391471) and [issue 387377](https://bugs.chromium.org/p/chromium/issues/detail?id=387377).
 
 For this reason, this solution is not the best in this case, but when I started working on this extension I had no idea where I was getting myself into, since I've had neved wrote a browser extension before, and I've also already spent way too much time working on this, so that will be a fix for later.
+
+**Note:** apart from the information discussed in this section, the extension doesn't collect any type of data from any host whatsoever.
 
 # Using the extension
 Right after installing the extension, it will start collecting time data from the sites accessed by following the default settings, defined in the `Setting` section that can be found in the page  shown by options menu, that can be accessed by right clicking the extension's menu.
