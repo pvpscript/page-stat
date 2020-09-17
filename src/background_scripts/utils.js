@@ -38,7 +38,10 @@ function log(msg, logCall) {
 	const call = logCall || console.log;
 
 	if (configCache.log) {
-		call(msg);
+		const callerName = log.caller.name || "*";
+		const finalMsg = `[${callerName}] ${msg}`;
+
+		call(finalMsg);
 	}
 }
 
