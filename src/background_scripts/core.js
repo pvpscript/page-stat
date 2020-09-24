@@ -27,17 +27,7 @@ async function updateFocus(windowId, urlContainer) {
 		if (!hasFocus) {
 			focused.set(windowId, hostSet);
 
-			for (let [wid, host] of focused) {
-				chrome.tabs.query({
-					active: true, windowId: wid
-				}, (tabs) => {
-					if ((new URL(tabs[0].url)).host == currentHost) {
-						focused.set(wid, hostSet);
-					}
-				});
-			}
-			//focused.set(windowId,
-			//	existingHost || new Host(currentHost));
+			setRepeatedHostsFocus(currentHost, hostSet);
 		} else if (currentHost != hasFocus.host) {
 			await updatePageTime(hasFocus);
 			focused.set(windowId, hostSet);
@@ -56,4 +46,15 @@ async function updateFocus(windowId, urlContainer) {
 	}
 }
 
+function setRepeatedHostsFocus(currentHost, hostSet) {
+	for (let [wid, host] of focused) {
+		chrome.tabs.query({
+			active: true, windowId: wid
+		}, (tabs) => {
+			if ((new URL(tabs[0].url)).host == currentHost) {
+				focused.set(wid, hostSet);
+			}
+		});
+	}
+}
 
