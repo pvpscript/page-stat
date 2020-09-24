@@ -121,7 +121,7 @@ let configCache = {
 	protocols: ["http", "https", "file", "ftp"], // Valid protocols
 	pMatching: true, // true: match only defined protocols; false: match every protocol, except defined;
 	inactive: [], // Inactive hosts
-	log: false, // Show log messages
+	log: true, // Show log messages
 	/*focusedOnly: true, // Used by the update alarm to update only hosts that are on a focused window*/
 };
 
