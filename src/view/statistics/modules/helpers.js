@@ -30,13 +30,17 @@ function updateCustomInterval(host) { // (helper) used by the "usage" and "custo
 
 function deleteHost(e) { // (helper) used by the 'storage get' populator
 	chrome.storage.local.get(['pages'], (res) => {
-		delete res.pages[this.id];
+		const message = "Do you really want to delete all " +
+			"information for\n" + this.id + "?";
+		if (confirm(message)) {
+			delete res.pages[this.id];
 
-		chrome.storage.local.set({pages: res.pages});
-		chrome.runtime.sendMessage({
-			type: "updatePagesCache",
-			data: {pages: res.pages}
-		});
+			chrome.storage.local.set({pages: res.pages});
+			chrome.runtime.sendMessage({
+				type: "updatePagesCache",
+				data: {pages: res.pages}
+			});
+		}
 	});
 
 	window.location.reload();
