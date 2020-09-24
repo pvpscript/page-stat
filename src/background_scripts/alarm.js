@@ -13,12 +13,17 @@ const alarmAction = {
 			});
 		} else {
 		*/
-		focused.forEach(async (host) => {
+		
+		// remove repetitions
+		const rep = {}
+		focused.forEach((host) => {
 			if (host) {
-				await updatePageAndFocusTime(host);
+				rep[host.host] = rep[host.host] || host;
 			}
 		});
-
+		for (let host in rep) {
+			await updatePageAndFocusTime(rep[host]);
+		}
 	},
 };
 
