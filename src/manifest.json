@@ -1,6 +1,6 @@
 {
 	"name": "Page Stat",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Display time usage statistics for accessed pages",
 	"manifest_version": 2,
 	"permissions": [
