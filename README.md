@@ -4,7 +4,7 @@ A web browser extension to measure time spent on websites.
 # Introduction
 Page Stat is a browser extension for chrome and firefox that calculates how
 much time is spent on websites in general  and provides statistics
-of **daily**, **weekly**, **monthly** and **yearly** usage.
+of **daily**, **weekly**, **monthly** and **yearly** usage by displaying a list of accessed domains and comparing its times in ascending order. And it's also possible to plot the usage data for a specific domain in the list.
 
 # How the extension collects data
 For measuring the time spent on a site, the extension stores a `map` containing objects called as focused hosts, where each of it has two fields, following the schematics below, that indicates a `host name` and one that stores the time (in the unix timestamp format) for the very moment that the host was once opened.
