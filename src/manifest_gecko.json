@@ -33,8 +33,7 @@
 			"background_scripts/listeners_tabs.js",
 			"background_scripts/core.js",
 			"background_scripts/alarm.js"
-		],
-		"persistent": false
+		]
 	},
 
 	"browser_action": {
