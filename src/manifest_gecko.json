@@ -40,5 +40,12 @@
 	"browser_action": {
 		"default_title": "Page usage statistics",
 		"default_popup": "popup/popup.html"
+	},
+
+	"browser_specific_settings": {
+	  "gecko": {
+	    "id": "pagestat_by_pvpscript@github.com"
+	  }
 	}
+
 }
