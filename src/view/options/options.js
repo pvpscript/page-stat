@@ -71,9 +71,16 @@ code.appendChild(structure);
 
 // Show current storage usage
 const usageNode = document.getElementById("curr-usage");
-chrome.storage.local.getBytesInUse((res) => 
-	usageNode.innerText = res + "B"
-);
+if (typeof browser !== "undefined" && browser) {
+	browser.storage.local.get((items) => {
+		const res = JSON.stringify(items).length;
+		usageNode.innerText = res + "B";
+	});
+} else {
+	chrome.storage.local.getBytesInUse((res) => 
+		usageNode.innerText = res + "B"
+	);
+}
 
 // Save storage data
 const getData = {
