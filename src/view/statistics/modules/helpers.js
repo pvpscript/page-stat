@@ -40,10 +40,10 @@ function deleteHost(e) { // (helper) used by the 'storage get' populator
 				type: "updatePagesCache",
 				data: {pages: res.pages}
 			});
+
+			window.location.reload();
 		}
 	});
-
-	window.location.reload();
 }
 
 function updateModal(e) { // (helper) used by the 'storage get' populator
