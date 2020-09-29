@@ -8,6 +8,8 @@
 };
 */
 body {
+  font-family: "Cantarell";
+  font-size: 12px;
   width: 300px;
   margin: 0;
 }
