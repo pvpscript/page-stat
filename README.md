@@ -3,8 +3,18 @@ A web browser extension to measure time spent on websites.
 
 # Introduction
 Page Stat is a browser extension for chrome and firefox that calculates how
-much time is spent on websites in general  and provides statistics
-of **daily**, **weekly**, **monthly** and **yearly** usage by displaying a list of accessed domains and comparing its times in ascending order. And it's also possible to plot the usage data for a specific domain in the list.
+much time is spent on websites in general and provides usage statistics for different time intervals, such as **daily**, **weekly**, **monthly**, **yearly** and also **custom defined**. A list of accessed domains is displayed, sorted by usage time in ascending order. Select a specific domain on this list to plot the usage data for it.
+
+## Screen shots
+Site listing sorted by usage time in ascending order
+![alt-text](/images/host-list.png "Site listing sorted by usage time in ascending order.")
+
+Chart displaying statistics for a specific domain
+![alt-text](/images/chart-default.png "Chart displaying statistics for a specific domain.")
+
+Chart statistics for a custom interval in a specific domain
+![alt-text](/images/chart-custom.png "Chart statistics for a custom interval in a specific domain.")
+
 
 # How the extension collects data
 For measuring the time spent on a site, the extension stores a `map` containing objects called as focused hosts, where each of it has two fields, following the schematics below, that indicates a `host name` and one that stores the time (in the unix timestamp format) for the very moment that the host was once opened.
@@ -31,7 +41,11 @@ Right after installing the extension, it will start collecting time data from th
 
 ![alt text][options-page]
 
-![alt text][options-menu]
+Options menu on Chrome
+![alt text][options-menu-chrome]
+
+Options menu on Firefox
+![alt-text][options-menu-firefox]
 
 Clicking on the extension menu, it will show up information about the current site, disclosed on the extension's menu, showin by the following image.
 
@@ -47,7 +61,8 @@ Explain how to use the extension in the major browsers.
 
 [menu]: /images/menu.png "Extension's menu."
 [options-page]: /images/options.png "Options page, showing side menu."
-[options-menu]: /images/right-click-menu.png "Right click menu."
+[options-menu-chrome]: /images/right-click-menu-chrome.png "Right click menu on Chrome."
+[options-menu-firefox]: /images/right-click-menu-firefox.png "Right click menu on Firefox."
 
 # Storage
 Information regarding the storage.
