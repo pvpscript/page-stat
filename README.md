@@ -96,7 +96,7 @@ The code used for this estimation can be found [here](https://gist.github.com/pv
 This extension is compatible with **Firefox**; **Google Chrome and derivatives**; **Opera**.
 
 # Installation
-* Firefox: [Add-ons for Firefox page]();
+* Firefox: [Add-ons for Firefox page](https://addons.mozilla.org/en-US/firefox/addon/page-stat/);
 * Google Chrome: [Chrome Web Store page](); 
 * Opera: [Opera add-ons page]();
 
