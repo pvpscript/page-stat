@@ -97,7 +97,7 @@ This extension is compatible with **Firefox**; **Google Chrome and derivatives**
 
 # Installation
 * Firefox: [Add-ons for Firefox page](https://addons.mozilla.org/en-US/firefox/addon/page-stat/);
-* Google Chrome: [Chrome Web Store page](); 
+* Google Chrome: [Chrome Web Store page](https://chrome.google.com/webstore/detail/page-stat/iifimpgnkpmahfnopiaidbohgepbeggd); 
 * Opera: [Opera add-ons page]();
 
 ## Manual installation
