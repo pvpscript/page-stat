@@ -98,7 +98,14 @@ This extension is compatible with **Firefox**; **Google Chrome and derivatives**
 # Installation
 * Firefox: [Add-ons for Firefox page](https://addons.mozilla.org/en-US/firefox/addon/page-stat/);
 * Google Chrome: [Chrome Web Store page](https://chrome.google.com/webstore/detail/page-stat/iifimpgnkpmahfnopiaidbohgepbeggd); 
-* Opera: [Opera add-ons page]();
+* Opera: Follow the instructions below.
+
+## Install Chrome extension on Opera
+1. Install the `Install Chrome Extensions` addon for Opera. ([link](https://addons.opera.com/en/extensions/details/install-chrome-extensions/))
+2. Go to the [Chrome Web Store page](https://chrome.google.com/webstore/detail/page-stat/iifimpgnkpmahfnopiaidbohgepbeggd); 
+3. Hit the button `Add to Opera`;
+4. Click OK on the dialogue that will show up;
+5. Click the `Install` button.
 
 ## Manual installation
 See the specifications regarding unpacked extensions for your particular browser.
