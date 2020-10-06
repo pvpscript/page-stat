@@ -36,6 +36,10 @@ For this reason, this solution is not the best in this case, but when I started 
 
 **Note:** apart from the information discussed in this section, the extension doesn't collect any type of data from any host whatsoever.
 
+# Known Issues
+
+This extension is unable to work with window focus (reason discussed right above), therefore the time count becomes unreliable in case the user unfocus the browser window somehow. This makes that the time keeps counting up for the site that was last focusued before the window lost focus. 
+
 # Using the extension
 Right after installing the extension, it will start collecting time data from the sites accessed by following the default settings, defined in the `Setting` section that can be found in the page  shown by options menu, that can be accessed by right clicking the extension's menu.
 
