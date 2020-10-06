@@ -26,7 +26,7 @@ async function updateFocus(windowId, urlContainer) {
 
 		if (!hasFocus) {
 			focused.set(windowId, hostSet);
-
+			checkPageExistence(currentHost);
 			setRepeatedHostsFocus(currentHost, hostSet);
 		} else if (currentHost != hasFocus.host) {
 			await updatePageTime(hasFocus);
@@ -58,3 +58,11 @@ function setRepeatedHostsFocus(currentHost, hostSet) {
 	}
 }
 
+function checkPageExistence(host) {
+	const page = pagesCache[host];
+	const todayDate = today();
+
+	if (page && page.time[todayDate] == undefined) {
+		page.time[todayDate] = 0;
+	}
+}

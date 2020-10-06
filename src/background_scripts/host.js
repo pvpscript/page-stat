@@ -10,10 +10,9 @@ async function updatePageTime(host) {
 
 	const page = pagesCache[host.host];
 	const todayDate = today();
-	//pagesCache[Math.floor(Math.random()*10)] = Math.random().toString(36);
 
 	if (page) {
-		if (page.time[todayDate]) {
+		if (page.time[todayDate] != undefined) {
 			page.time[todayDate] += Date.now() - host.focusedAt;
 		} else {
 			const todayUTC = new Date(todayDate +
