@@ -8,29 +8,13 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 		chrome.tabs.get(activeInfo.tabId, async (tab) => {
 			const urlContainer = buildURL(tab.url);
 
-			/*
-			console.log("-------------------- Before --------------------");
-			console.log(pagesCache);
-			console.log("------------------------------------------------");
-			*/
-
 			if (urlContainer) {
 				log(`Tab ${activeInfo.tabId} just got activated with URL: ${urlContainer.url}`);
 
 				await updateFocus(tab.windowId, urlContainer);
 			}
 
-			/*
-			console.log("-------------------- After --------------------");
-			console.log(pagesCache);
-			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
-			console.log("-----------------------------------------------");
-			*/
 			chrome.storage.local.set({pages: pagesCache});
-			/*
-			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
-			*/
-			
 		});
 	});
 });
@@ -44,12 +28,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		chrome.storage.local.get(['pages'], async (res) => {
 			pagesCache = res.pages;
 
-			/*
-			console.log("-------------------- Before --------------------");
-			console.log(pagesCache);
-			console.log("------------------------------------------------");
-			*/
-
 			const urlContainer = buildURL(tab.url);
 
 			if (urlContainer) {
@@ -57,15 +35,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 				await updateFocus(tab.windowId, urlContainer);
 			}
-			/*console.log("-------------------- After --------------------");
-			console.log(pagesCache);
-			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
-			console.log("-----------------------------------------------");
-			*/
+
 			chrome.storage.local.set({pages: pagesCache});
-			/*
-			chrome.storage.sync.get(['pages'], (res) => console.log(res.pages));
-			*/
 		});
 	}
 });

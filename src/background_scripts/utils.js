@@ -36,7 +36,6 @@ function today(utc) {
 
 function log(msg, logCall) {
 	const call = logCall || console.log;
-	caller = log.caller
 
 	if (configCache.log) {
 		const callerName = (log.caller && log.caller.name) || "*";

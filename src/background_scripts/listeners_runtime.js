@@ -110,8 +110,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 chrome.runtime.onInstalled.addListener((message, sender, sendResponse) => {
 	log("Extension installed/updated");
 
-	chrome.storage.local.set({
-		pages: {}, /* Pages dictionary, with time already computed. */
+	chrome.storage.local.get(['pages'], (res) => {
+		if (!res.pages) {
+			chrome.storage.local.set({
+				pages: {}, /* Pages dictionary. */
+			});
+		}
 	});
 
 	chrome.windows.getLastFocused(null, (win) => currentWindowId = win.id);
