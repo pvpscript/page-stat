@@ -113,3 +113,11 @@ This extension is compatible with **Firefox**; **Google Chrome and derivatives**
 
 ## Manual installation
 See the specifications regarding unpacked extensions for your particular browser.
+
+# ChangeLog
+
+## v1.0.1
+* Fixed a bug where hosts accessed between two different days were getting their time calculated erroneously.
+
+## v1.0.0
+* First release
